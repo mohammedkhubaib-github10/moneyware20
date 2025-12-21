@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426792147218",
+    "project_id": "moneyware20",
+    "storage_bucket": "moneyware20.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426792147218:android:036443c8236eb4e5287bcb",
+        "android_client_info": {
+          "package_name": "com.example.moneyware20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIYNodHU8aGYtfoGpBcOcNjDhSm1khM1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -12,7 +14,7 @@ kotlin {
     androidLibrary {
         namespace = "com.example.ui"
         compileSdk = 36
-        minSdk = 28
+        minSdk = 24
 
         withHostTestBuilder {
         }
@@ -59,6 +61,14 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.kotlin.stdlib)
                 implementation(project(":presentation"))
                 // Add KMP dependencies here

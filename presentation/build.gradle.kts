@@ -12,7 +12,7 @@ kotlin {
     androidLibrary {
         namespace = "com.example.presentation"
         compileSdk = 36
-        minSdk = 28
+        minSdk = 24
 
         withHostTestBuilder {
         }

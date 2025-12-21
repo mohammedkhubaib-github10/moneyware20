@@ -12,7 +12,7 @@ kotlin {
     androidLibrary {
         namespace = "com.example.data"
         compileSdk = 36
-        minSdk = 28
+        minSdk = 24
 
         withHostTestBuilder {
         }
@@ -97,4 +97,6 @@ kotlin {
         }
     }
 
+}
+dependencies {
 }
