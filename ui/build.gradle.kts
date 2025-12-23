@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
@@ -15,7 +16,6 @@ kotlin {
         namespace = "com.example.ui"
         compileSdk = 36
         minSdk = 24
-
         withHostTestBuilder {
         }
 
@@ -64,6 +64,8 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(compose.material)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
@@ -111,3 +113,4 @@ kotlin {
     }
 
 }
+
