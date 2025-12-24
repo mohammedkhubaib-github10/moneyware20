@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ContainedLoadingIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,6 +43,7 @@ fun SplashScreen(logo: DrawableResource) {
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppLogo(logo: DrawableResource) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -61,6 +64,10 @@ fun AppLogo(logo: DrawableResource) {
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Bold
         )
-
+        ContainedLoadingIndicator(
+            modifier = Modifier.padding(24.dp),
+            containerColor = Color(0xFFEEF8F7),
+            indicatorColor = Color(0xFF41817C)
+        )
     }
 }

@@ -63,16 +63,20 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material3)
+                implementation(libs.androidx.compose.material3)
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.compose.ui.tooling.preview)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.kotlin.stdlib)
+                // build.gradle.kts (in commonMain dependencies)
+                implementation(libs.kotlinx.datetime) // Use 0.6.0 or higher
                 implementation(project(":presentation"))
+                implementation(project(":domain"))
                 // Add KMP dependencies here
             }
         }
