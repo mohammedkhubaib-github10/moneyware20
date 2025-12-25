@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.domain.entity.BudgetType
-import com.example.ui.component.MoneywareTextField
+import com.example.moneyware20.component.MoneywareTextField
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.ui.component
+package com.example.moneyware20.component
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions

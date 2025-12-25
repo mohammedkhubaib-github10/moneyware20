@@ -1,4 +1,4 @@
-package com.example.ui.screen
+package com.example.moneyware20.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,11 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.DrawableResource
+import moneyware20.composeapp.generated.resources.Res
+import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun SplashScreen(logo: DrawableResource) {
+fun SplashScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier.background(
@@ -32,7 +33,7 @@ fun SplashScreen(logo: DrawableResource) {
                 shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
             ).weight(0.75f).fillMaxSize(), contentAlignment = Alignment.Center
         ) {
-            AppLogo(logo)
+            AppLogo()
         }
         Text(
             text = "Powered by DEV-MK",
@@ -45,7 +46,7 @@ fun SplashScreen(logo: DrawableResource) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AppLogo(logo: DrawableResource) {
+fun AppLogo() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier.background(color = Color.LightGray, shape = CircleShape)
@@ -53,7 +54,7 @@ fun AppLogo(logo: DrawableResource) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(logo),
+                painter = painterResource(Res.drawable.logo),
                 contentDescription = "logo",
                 modifier = Modifier.size(140.dp).clip(CircleShape)
             )
