@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -58,8 +59,7 @@ fun BudgetDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, primaryColor, RoundedCornerShape(20.dp))
-                .background(Color.White, RoundedCornerShape(20.dp))
+                .background(Color.White, RoundedCornerShape(24.dp))
         ) {
 
             /* ---------- TITLE ---------- */
@@ -76,17 +76,17 @@ fun BudgetDialog(
                 text = budgetName,
                 onValueChange = onBudgetNameChange,
                 hint = "Budget name",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             /* ---------- AMOUNT ---------- */
             MoneywareTextField(
                 text = budgetAmount,
                 onValueChange = onBudgetAmountChange,
                 hint = "Budget amount",
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 keyboardType = KeyboardType.Number
             )
 
@@ -94,14 +94,8 @@ fun BudgetDialog(
 
             /* ---------- ACTIONS ---------- */
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
             ) {
-                TextButton(onClick = onCancelClick) {
-                    Text(text = "Cancel", color = primaryColor)
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
 
                 Button(
                     onClick = onConfirmClick,
@@ -109,9 +103,13 @@ fun BudgetDialog(
                         containerColor = primaryColor,
                         contentColor = Color.White
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
                 ) {
                     Text(confirmButtonText)
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(onClick = onCancelClick, modifier = Modifier) {
+                    Text(text = "Cancel", color = primaryColor)
                 }
             }
 
@@ -143,6 +141,8 @@ fun Title(titleText: String, primaryColor: Color) {
 
 @Composable
 fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) -> Unit) {
+    val primaryColor = Color(0xFF41817C)
+
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
         /* ---------- BUDGET TYPE ---------- */
@@ -156,6 +156,12 @@ fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) 
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
+                colors = RadioButtonColors(
+                    selectedColor = primaryColor,
+                    unselectedColor = Color.Black,
+                    disabledSelectedColor = Color.Black,
+                    disabledUnselectedColor = Color.Black
+                ),
                 selected = selectedType == BudgetType.AUTOMATIC,
                 onClick = { onBudgetTypeChange(BudgetType.AUTOMATIC) }
             )
@@ -164,6 +170,12 @@ fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) 
             Spacer(modifier = Modifier.width(16.dp))
 
             RadioButton(
+                colors = RadioButtonColors(
+                    selectedColor = primaryColor,
+                    unselectedColor = Color.Black,
+                    disabledSelectedColor = Color.Black,
+                    disabledUnselectedColor = Color.Black
+                ),
                 selected = selectedType == BudgetType.MANUAL,
                 onClick = { onBudgetTypeChange(BudgetType.MANUAL) }
             )
