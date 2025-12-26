@@ -44,6 +44,8 @@ kotlin {
             implementation(project(":presentation"))
             implementation(project(":domain"))
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.jetbrains.navigation3.ui)
+            implementation(libs.jetbrains.lifecycle.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -2,6 +2,7 @@ package com.example.moneyware20.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +26,7 @@ import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(onNavigation:(String, Boolean) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier.background(
@@ -33,7 +34,7 @@ fun SplashScreen() {
                 shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
             ).weight(0.75f).fillMaxSize(), contentAlignment = Alignment.Center
         ) {
-            AppLogo()
+            AppLogo(onNavigation)
         }
         Text(
             text = "Powered by DEV-MK",
@@ -46,7 +47,7 @@ fun SplashScreen() {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AppLogo() {
+fun AppLogo(onNavigation: (String, Boolean) -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier.background(color = Color.LightGray, shape = CircleShape)
@@ -66,7 +67,7 @@ fun AppLogo() {
             fontWeight = FontWeight.Bold
         )
         ContainedLoadingIndicator(
-            modifier = Modifier.padding(24.dp),
+            modifier = Modifier.padding(24.dp).clickable{onNavigation("khubaib", true)},
             containerColor = Color(0xFFEEF8F7),
             indicatorColor = Color(0xFF41817C)
         )

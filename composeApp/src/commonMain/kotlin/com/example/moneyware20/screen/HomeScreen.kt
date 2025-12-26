@@ -63,7 +63,7 @@ import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(userName: String) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     MoneywareDrawer(
@@ -86,7 +86,6 @@ fun HomeScreen() {
                 Fab()
             }
         ) { it ->
-
         }
     }
 }
