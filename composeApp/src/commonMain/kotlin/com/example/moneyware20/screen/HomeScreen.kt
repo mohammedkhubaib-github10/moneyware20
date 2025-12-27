@@ -43,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleFloatingActionButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,17 +56,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.domain.entity.BudgetType
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.moneyware20.component.header.MainHeader
 import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
 
+
 @Composable
 fun HomeScreen(userName: String) {
+    val viewModel: BudgetViewModel = viewModel()
+    val uiState by viewModel.budgetUIState.collectAsState()
+    val dialog by viewModel.dialogState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
+
     MoneywareDrawer(
         drawerState = drawerState,
         userName = "Mohammed Khubaib C",
@@ -83,25 +90,39 @@ fun HomeScreen(userName: String) {
             },
             modifier = Modifier.fillMaxSize(),
             floatingActionButton = {
-                Fab()
+                Fab(viewModel)
             }
         ) { it ->
         }
+    }
+    if (dialog) {
+        BudgetDialog(
+            mode = mode,
+            budgetName = uiState.budgetName,
+            budgetAmount = uiState.budgetAmount,
+            selectedType = uiState.budgetType,
+            onBudgetNameChange = { viewModel.onBudgetNameChange(it) },
+            onBudgetAmountChange = { viewModel.onBudgetAmountChange(it) },
+            onBudgetTypeChange = { viewModel.onBudgetTypeChange(it) },
+            onConfirmClick = {
+                viewModel.onAddBudget()
+                viewModel.toggleDialog(false)
+            },
+            onCancelClick = {
+                viewModel.onCancel()
+                viewModel.toggleDialog(false)
+            },
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun Fab() {
+fun Fab(viewModel: BudgetViewModel) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     val animatedColor by animateColorAsState(
         targetValue = if (expanded) Color(0xFF41817C) else Color(0xFF2C6B65)
     )
-    var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
-    var text by rememberSaveable { mutableStateOf("") }
-    var amttext by rememberSaveable { mutableStateOf("") }
-    var type by rememberSaveable { mutableStateOf(BudgetType.AUTOMATIC) }
-    var openDialog by rememberSaveable { mutableStateOf(false) }
     FloatingActionButtonMenu(
         expanded = expanded,
         button = {
@@ -117,7 +138,7 @@ fun Fab() {
     ) {
         // Manual Entry
         FloatingActionButtonMenuItem(
-            onClick = { expanded = false; openDialog = true },
+            onClick = { expanded = false; viewModel.toggleDialog(true) },
             icon = {
                 Icon(
                     Icons.Filled.Edit,
@@ -127,19 +148,6 @@ fun Fab() {
             },
             text = { Text("Manual Entry", color = Color.White) },
             containerColor = Color(0xFF41817C)
-        )
-    }
-    if (openDialog) {
-        BudgetDialog(
-            mode = mode,
-            budgetName = text,
-            budgetAmount = amttext,
-            selectedType = type,
-            onBudgetNameChange = { text = it },
-            onBudgetAmountChange = { amttext = it },
-            onBudgetTypeChange = { type = it },
-            onConfirmClick = { openDialog = false },
-            onCancelClick = { openDialog = false },
         )
     }
 }

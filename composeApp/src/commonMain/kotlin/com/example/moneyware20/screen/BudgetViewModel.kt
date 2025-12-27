@@ -1,0 +1,58 @@
+package com.example.moneyware20.screen
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.BudgetType
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+
+class BudgetViewModel : ViewModel() {
+
+    private val _budgetUIState = MutableStateFlow(BudgetUIState())
+    val budgetUIState: StateFlow<BudgetUIState> = _budgetUIState.asStateFlow()
+    private val _dialogState = MutableStateFlow(false)
+    val dialogState: StateFlow<Boolean> = _dialogState
+
+    /* ---------------- UI Events ---------------- */
+    fun toggleDialog(dialog: Boolean) {
+        _dialogState.value = dialog
+    }
+
+    fun onBudgetNameChange(name: String) {
+        _budgetUIState.value = _budgetUIState.value.copy(
+            budgetName = name
+        )
+    }
+
+    fun onBudgetAmountChange(amount: String) {
+        _budgetUIState.value = _budgetUIState.value.copy(
+            budgetAmount = amount
+        )
+    }
+
+    fun onBudgetTypeChange(type: BudgetType) {
+        _budgetUIState.value = _budgetUIState.value.copy(
+            budgetType = type
+        )
+    }
+
+    fun onAddBudget() {
+        viewModelScope.launch {
+            // later: call UseCase here
+            // saveBudgetUseCase(...)
+        }
+        _budgetUIState.value = BudgetUIState()
+    }
+
+    fun onCancel() {
+        _budgetUIState.value = BudgetUIState()
+    }
+}
+
+data class BudgetUIState(
+    val budgetName: String = "",
+    val budgetAmount: String = "",
+    val budgetType: BudgetType = BudgetType.MANUAL
+)

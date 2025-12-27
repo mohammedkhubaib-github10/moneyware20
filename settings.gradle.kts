@@ -30,7 +30,3 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":domain")
-include(":data")
-include(":presentation")
-include(":ui")
-include(":authentication")

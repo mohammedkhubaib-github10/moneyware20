@@ -50,7 +50,7 @@ fun MoneywareTextField(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color(0xFFEEF8F7),
             focusedBorderColor = Color(0xFF41817C),
-            unfocusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color(0xFF41817C),
             disabledBorderColor = Color.Transparent,
             cursorColor = Color(0xFF41817C)
         ),

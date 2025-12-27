@@ -41,7 +41,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.datetime) // Use 0.6.0 or higher
-            implementation(project(":presentation"))
             implementation(project(":domain"))
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.navigation3.ui)
