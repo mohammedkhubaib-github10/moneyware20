@@ -1,8 +1,9 @@
-package com.example.moneyware20.screen
+package com.example.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.BudgetType
+import com.example.presentation.ui_state.BudgetUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,8 +52,3 @@ class BudgetViewModel : ViewModel() {
     }
 }
 
-data class BudgetUIState(
-    val budgetName: String = "",
-    val budgetAmount: String = "",
-    val budgetType: BudgetType = BudgetType.MANUAL
-)
