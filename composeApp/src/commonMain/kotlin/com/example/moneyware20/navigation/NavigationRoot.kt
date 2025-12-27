@@ -39,8 +39,9 @@ fun NavigationRoot(
             when(key) {
                 is Route.Splash -> {
                     NavEntry(key) {
-                        SplashScreen{name, login ->
-                            if (login) backStack.add(Route.Home(name))
+                        SplashScreen{name ->
+                            backStack.removeLast()
+                            if (name != null) backStack.add(Route.Home(name))
                         }
 
 

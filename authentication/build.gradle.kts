@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
-    alias(libs.plugins.kotlin.serialization)
-
 }
 
 kotlin {
@@ -12,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.example.presentation"
+        namespace = "com.example.authentication"
         compileSdk = 36
         minSdk = 24
 
@@ -33,7 +31,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "presentationKit"
+    val xcfName = "authenticationKit"
 
     iosX64 {
         binaries.framework {
@@ -62,12 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
-                implementation(libs.kotlinx.datetime)
-                implementation(project(":domain"))
-                implementation(project(":authentication"))
                 // Add KMP dependencies here
             }
         }
@@ -91,7 +84,6 @@ kotlin {
                 implementation(libs.androidx.runner)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.testExt.junit)
-
             }
         }
 
