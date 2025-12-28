@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.presentation.viewmodel.AuthViewModel
+import com.example.presentation.viewmodel.LoginViewModel
 import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
@@ -29,7 +29,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SplashScreen(onNavigation: (String?) -> Unit, viewModel: AuthViewModel = koinViewModel()) {
+fun SplashScreen(onNavigation: (String?) -> Unit, viewModel: LoginViewModel = koinViewModel()) {
     val coroutine = rememberCoroutineScope()
     Column(modifier = Modifier.fillMaxSize()) {
         Box(

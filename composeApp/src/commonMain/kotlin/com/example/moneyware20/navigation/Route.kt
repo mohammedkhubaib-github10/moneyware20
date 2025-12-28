@@ -11,5 +11,8 @@ sealed interface Route: NavKey {
     data object Splash: Route, NavKey
 
     @Serializable
+    data object Login: Route, NavKey
+
+    @Serializable
     data class Home(val user: String): Route, NavKey
 }
