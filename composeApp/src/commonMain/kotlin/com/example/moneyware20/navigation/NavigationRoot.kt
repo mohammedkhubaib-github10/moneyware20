@@ -9,12 +9,10 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.example.moneyware20.screen.HomeScreen
+import com.example.moneyware20.screen.homescreen.HomeScreen
 import com.example.moneyware20.screen.SplashScreen
-import com.example.presentation.viewmodel.AuthViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavigationRoot(

@@ -9,7 +9,7 @@ class MyApplication : Application() {
         super.onCreate()
         // Call the helper, passing Android-specific context
         initKoin {
-            androidContext(this@MyApplication)
+            androidContext(this@MyApplication)  // this@MyApplication  inside lambda is equivalent to MyApplication.this in java
         }
     }
 }
