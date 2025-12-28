@@ -56,18 +56,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.moneyware20.component.header.MainHeader
 import com.example.presentation.viewmodel.BudgetViewModel
 import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun HomeScreen(userName: String) {
-    val viewModel: BudgetViewModel = viewModel()
+fun HomeScreen(userName: String, viewModel: BudgetViewModel = koinViewModel()) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val dialog by viewModel.dialogState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
