@@ -32,6 +32,7 @@ fun NavigationRoot(
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
+        onBack = {backStack.removeLastOrNull()},
         entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
         ),
