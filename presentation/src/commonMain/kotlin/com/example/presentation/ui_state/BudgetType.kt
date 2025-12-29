@@ -1,4 +1,4 @@
-package com.example.domain.entity
+package com.example.presentation.ui_state
 
 enum class BudgetType {
     AUTOMATIC,

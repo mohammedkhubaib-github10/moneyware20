@@ -60,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.datetime) // Use 0.6.0 or higher
                 // Add KMP dependencies here
             }
         }
@@ -67,6 +68,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+
             }
         }
 

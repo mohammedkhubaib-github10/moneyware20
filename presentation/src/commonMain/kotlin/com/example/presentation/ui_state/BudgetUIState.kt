@@ -1,6 +1,6 @@
 package com.example.presentation.ui_state
 
-import com.example.domain.entity.BudgetType
+import com.example.presentation.ui_state.BudgetType
 
 data class BudgetUIState(
     val budgetName: String = "",
