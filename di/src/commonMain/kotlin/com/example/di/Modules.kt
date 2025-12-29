@@ -4,6 +4,7 @@ package com.example.di
 import com.example.data.repository.BudgetRepositoryImpl
 import com.example.domain.repository.BudgetRepository
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
+import com.example.domain.usecase.Budget.ValidateBudgetUsecase
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
 import org.koin.core.module.dsl.bind
@@ -26,4 +27,5 @@ val dataModule = module {
 val domainModule = module {
 
     factoryOf(::CreateBudgetUsecase)
+    factoryOf(::ValidateBudgetUsecase)
 }

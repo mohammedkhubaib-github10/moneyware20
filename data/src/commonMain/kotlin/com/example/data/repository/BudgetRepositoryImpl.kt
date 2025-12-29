@@ -4,8 +4,8 @@ import com.example.domain.entity.Budget
 import com.example.domain.repository.BudgetRepository
 
 class BudgetRepositoryImpl : BudgetRepository {
-    override suspend fun createBudget(budget: Budget) {
-        TODO("Not yet implemented")
+    override suspend fun createBudget(budget: Budget): Budget {
+        return budget
     }
 
     override suspend fun updateBudget(budget: Budget) {
@@ -21,7 +21,7 @@ class BudgetRepositoryImpl : BudgetRepository {
     }
 
     override suspend fun isBudgetNameExists(name: String): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override suspend fun deleteBudget(budgetId: String) {

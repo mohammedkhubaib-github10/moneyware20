@@ -4,7 +4,7 @@ import com.example.domain.entity.Budget
 
 interface BudgetRepository {
 
-    suspend fun createBudget(budget: Budget)
+    suspend fun createBudget(budget: Budget): Budget
 
     suspend fun updateBudget(budget: Budget)
 
