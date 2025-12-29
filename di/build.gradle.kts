@@ -66,6 +66,8 @@ kotlin {
                 implementation(libs.lifecycle.viewmodel)
                 implementation(libs.navigation.compose)
                 implementation(project(":presentation"))
+                implementation(project(":domain"))
+                implementation(project(":data"))
 
                 // Add KMP dependencies here
             }

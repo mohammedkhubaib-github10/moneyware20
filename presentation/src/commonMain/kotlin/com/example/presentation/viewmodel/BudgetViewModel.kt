@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BudgetViewModel : ViewModel() {
+class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
     val budgetUIState: StateFlow<BudgetUIState> = _budgetUIState.asStateFlow()
@@ -42,28 +42,28 @@ class BudgetViewModel : ViewModel() {
     }
 
     fun onAddBudget() {
-//        viewModelScope.launch {
-//
-//            val uiState = _budgetUIState.value
-//
-//            val budget = Budget(
-//                budgetId = "", // temporary, generated in data layer
-//                budgetName = uiState.budgetName,
-//                budgetAmount = uiState.budgetAmount.toDouble()
-//            )
-//
-//            try {
-//                val createdBudget = createBudgetUsecase(budget)
-//
-//                //  Budget created successfully
-//                // createdBudget.budgetId now contains Firebase ID
-//
-//                _budgetUIState.value = BudgetUIState()
-//
-//            } catch (e: Exception) {
-//                //snack bar
-//            }
-//        }
+        viewModelScope.launch {
+
+            val uiState = _budgetUIState.value
+
+            val budget = Budget(
+                budgetId = "", // temporary, generated in data layer
+                budgetName = uiState.budgetName,
+                budgetAmount = uiState.budgetAmount.toDouble()
+            )
+
+            try {
+                val createdBudget = createBudgetUsecase(budget)
+
+                //  Budget created successfully
+                // createdBudget.budgetId now contains Firebase ID
+
+                _budgetUIState.value = BudgetUIState()
+
+            } catch (e: Exception) {
+                //snack bar
+            }
+        }
     }
 
 
