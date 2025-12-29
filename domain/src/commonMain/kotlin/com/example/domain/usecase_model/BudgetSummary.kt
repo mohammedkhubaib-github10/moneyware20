@@ -1,4 +1,4 @@
-package com.example.domain.usecase_models
+package com.example.domain.usecase_model
 
 import com.example.domain.entity.Budget
 

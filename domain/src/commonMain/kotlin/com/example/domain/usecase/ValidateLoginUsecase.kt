@@ -1,4 +1,4 @@
 package com.example.domain.usecase
 
-class TotalCalculationUsecase {
+class ValidateLoginUsecase {
 }
