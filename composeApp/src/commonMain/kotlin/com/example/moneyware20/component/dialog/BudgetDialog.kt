@@ -102,6 +102,7 @@ fun BudgetDialog(
                         contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(12.dp),
+                    enabled = !budgetAmount.isBlank() && !budgetName.isBlank()
                 ) {
                     Text(confirmButtonText)
                 }

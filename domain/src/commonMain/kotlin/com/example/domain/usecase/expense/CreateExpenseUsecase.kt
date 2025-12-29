@@ -1,4 +1,7 @@
 package com.example.domain.usecase.expense
 
-class CreateExpenseUsecase {
+import com.example.domain.repository.ExpenseRepository
+
+class CreateExpenseUsecase(private val expenseRepository: ExpenseRepository) {
+
 }

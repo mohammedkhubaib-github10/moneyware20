@@ -2,7 +2,8 @@ package com.example.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repository.BudgetRepository
+import com.example.domain.entity.Budget
+import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.presentation.ui_state.BudgetType
 import com.example.presentation.ui_state.BudgetUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,12 +42,30 @@ class BudgetViewModel : ViewModel() {
     }
 
     fun onAddBudget() {
-        viewModelScope.launch {
-            // later: call UseCase here
-            // saveBudgetUseCase(...)
-        }
-        _budgetUIState.value = BudgetUIState()
+//        viewModelScope.launch {
+//
+//            val uiState = _budgetUIState.value
+//
+//            val budget = Budget(
+//                budgetId = "", // temporary, generated in data layer
+//                budgetName = uiState.budgetName,
+//                budgetAmount = uiState.budgetAmount.toDouble()
+//            )
+//
+//            try {
+//                val createdBudget = createBudgetUsecase(budget)
+//
+//                //  Budget created successfully
+//                // createdBudget.budgetId now contains Firebase ID
+//
+//                _budgetUIState.value = BudgetUIState()
+//
+//            } catch (e: Exception) {
+//                //snack bar
+//            }
+//        }
     }
+
 
     fun onCancel() {
         _budgetUIState.value = BudgetUIState()

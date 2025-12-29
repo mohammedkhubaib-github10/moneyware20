@@ -10,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.example.di"
+        namespace = "com.example.data"
         compileSdk = 36
         minSdk = 24
 
@@ -31,7 +31,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "diKit"
+    val xcfName = "dataKit"
 
     iosX64 {
         binaries.framework {
@@ -60,13 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                api(libs.koin.core)
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewmodel)
-                implementation(libs.lifecycle.viewmodel)
-                implementation(libs.navigation.compose)
-                implementation(project(":presentation"))
-
+                implementation(project(":domain"))
                 // Add KMP dependencies here
             }
         }
@@ -74,14 +68,11 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
-
             }
         }
 
         androidMain {
             dependencies {
-                implementation(libs.koin.android)
-                implementation(libs.koin.androidx.compose)
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
