@@ -37,7 +37,8 @@ fun BudgetDialog(
     onBudgetAmountChange: (String) -> Unit,
     onBudgetTypeChange: (BudgetType) -> Unit,
     onConfirmClick: () -> Unit,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    error: String?
 ) {
 
     val titleText = if (mode == BudgetDialogMode.ADD) {
@@ -54,7 +55,9 @@ fun BudgetDialog(
 
     Dialog(onDismissRequest = onCancelClick) {
         Column(
-            modifier = Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White, RoundedCornerShape(24.dp))
         ) {
 
             /* ---------- TITLE ---------- */
@@ -85,6 +88,13 @@ fun BudgetDialog(
                 keyboardType = KeyboardType.Number
             )
 
+            if (error != null) {
+                Text(
+                    text = error,
+                    style = MaterialTheme.typography.labelMedium, color = Color.Red,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
 
             /* ---------- ACTIONS ---------- */
@@ -117,8 +127,8 @@ fun BudgetDialog(
 fun Title(titleText: String, primaryColor: Color) {
     Box(
         modifier = Modifier.fillMaxWidth().background(
-                primaryColor, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-            ).padding(vertical = 14.dp), contentAlignment = Alignment.Center
+            primaryColor, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+        ).padding(vertical = 14.dp), contentAlignment = Alignment.Center
     ) {
         Text(
             text = titleText,

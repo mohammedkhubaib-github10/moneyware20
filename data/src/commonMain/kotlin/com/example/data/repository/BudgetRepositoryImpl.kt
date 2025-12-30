@@ -21,7 +21,7 @@ class BudgetRepositoryImpl : BudgetRepository {
     }
 
     override suspend fun isBudgetNameExists(name: String): Boolean {
-        return false
+        return name.trim().equals("khubaib")
     }
 
     override suspend fun deleteBudget(budgetId: String) {

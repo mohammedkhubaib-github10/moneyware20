@@ -26,7 +26,7 @@ fun MoneywareTextField(
 ) {
 
     val maxLength = when (keyboardType) {
-        KeyboardType.Number -> 10
+        KeyboardType.Number, KeyboardType.Phone -> 10
         else -> 20
     }
 

@@ -108,7 +108,13 @@ private fun ContentSection(
 
         MoneywareTextField(
             text = uiState.phoneNo,
-            onValueChange = { viewModel.onPhoneNoChange(it) },
+            onValueChange = {
+                val filtered = it
+                    .filter {
+                        it.isDigit()
+                    }
+                viewModel.onPhoneNoChange(filtered)
+            },
             hint = "Phone number",
             keyboardType = KeyboardType.Phone,
             modifier = Modifier.fillMaxWidth(),

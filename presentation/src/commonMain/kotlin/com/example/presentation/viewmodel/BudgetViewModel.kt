@@ -6,19 +6,15 @@ import com.example.domain.entity.Budget
 import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.presentation.mapper.toUiMessage
-import com.example.presentation.ui_event.UIEvent
 import com.example.presentation.ui_state.BudgetType
 import com.example.presentation.ui_state.BudgetUIState
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : ViewModel() {
-    private val _uiEvent = MutableSharedFlow<UIEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
     val budgetUIState: StateFlow<BudgetUIState> = _budgetUIState.asStateFlow()
     private val _dialogState = MutableStateFlow(false)
@@ -36,6 +32,7 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
     }
 
     fun onBudgetAmountChange(amount: String) {
+
         _budgetUIState.value = _budgetUIState.value.copy(
             budgetAmount = amount
         )
@@ -45,6 +42,10 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
         _budgetUIState.value = _budgetUIState.value.copy(
             budgetType = type
         )
+    }
+
+    fun onError(message: String) {
+        _budgetUIState.value = _budgetUIState.value.copy(error = message)
     }
 
     fun onAddBudget() {
@@ -67,7 +68,7 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
 
                 is CreateBudgetResult.Error -> {
                     val message = result.error.toUiMessage()
-                    _uiEvent.emit(UIEvent.ShowSnackbar(message))
+                    onError(message)
                 }
             }
         }
