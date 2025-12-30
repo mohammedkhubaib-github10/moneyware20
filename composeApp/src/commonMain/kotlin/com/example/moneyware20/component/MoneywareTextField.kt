@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import containerColor
+import primaryColor
 
 @Composable
 fun MoneywareTextField(
@@ -48,11 +50,11 @@ fun MoneywareTextField(
         ),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color(0xFFEEF8F7),
-            focusedBorderColor = Color(0xFF41817C),
-            unfocusedBorderColor = Color(0xFF41817C),
+            unfocusedContainerColor = containerColor,
+            focusedBorderColor = primaryColor,
+            unfocusedBorderColor = primaryColor,
             disabledBorderColor = Color.Transparent,
-            cursorColor = Color(0xFF41817C)
+            cursorColor = primaryColor
         ),
         shape = RoundedCornerShape(12.dp)
     )

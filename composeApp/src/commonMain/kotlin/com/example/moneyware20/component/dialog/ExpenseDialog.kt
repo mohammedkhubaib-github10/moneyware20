@@ -42,6 +42,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
+import primaryColor
 
 @OptIn(FormatStringsInDatetimeFormats::class)
 @Composable
@@ -55,7 +56,6 @@ fun ExpenseDialog(
     onAddClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
-    val primaryColor = Color(0xFF41817C)
     val myDateFormat = LocalDateTime.Format {
         byUnicodePattern("dd-MM-yyyy")
     }

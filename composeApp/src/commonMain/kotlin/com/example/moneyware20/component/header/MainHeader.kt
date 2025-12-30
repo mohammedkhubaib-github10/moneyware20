@@ -28,7 +28,10 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHeader(onNavigationIconClick: () -> Unit, onActionIconClick: () -> Unit) {
+fun MainHeader(
+    onNavigationIconClick: () -> Unit,
+    onActionIconClick: () -> Unit
+) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     MediumTopAppBar(
         colors = TopAppBarColors(

@@ -13,16 +13,16 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val sharedModule = module {
-
-
+val viewModelModule = module {
     viewModelOf(::BudgetViewModel)
     viewModelOf(::LoginViewModel)
+
 }
 
 val dataModule = module {
 
     singleOf(::BudgetRepositoryImpl) { bind<BudgetRepository>() }
+
 }
 val domainModule = module {
 

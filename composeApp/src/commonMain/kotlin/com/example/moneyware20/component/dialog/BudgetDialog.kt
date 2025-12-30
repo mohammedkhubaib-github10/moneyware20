@@ -23,8 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.presentation.ui_state.BudgetType
 import com.example.moneyware20.component.MoneywareTextField
+import com.example.presentation.ui_state.BudgetType
 
 
 @Composable
@@ -39,7 +39,6 @@ fun BudgetDialog(
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
-    val primaryColor = Color(0xFF41817C)
 
     val titleText = if (mode == BudgetDialogMode.ADD) {
         "Add a Budget"
@@ -55,9 +54,7 @@ fun BudgetDialog(
 
     Dialog(onDismissRequest = onCancelClick) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White, RoundedCornerShape(24.dp))
+            modifier = Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(24.dp))
         ) {
 
             /* ---------- TITLE ---------- */
@@ -98,8 +95,7 @@ fun BudgetDialog(
                 Button(
                     onClick = onConfirmClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = primaryColor,
-                        contentColor = Color.White
+                        containerColor = primaryColor, contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(12.dp),
                     enabled = !budgetAmount.isBlank() && !budgetName.isBlank()
@@ -120,14 +116,9 @@ fun BudgetDialog(
 @Composable
 fun Title(titleText: String, primaryColor: Color) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                primaryColor,
-                RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-            )
-            .padding(vertical = 14.dp),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxWidth().background(
+                primaryColor, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+            ).padding(vertical = 14.dp), contentAlignment = Alignment.Center
     ) {
         Text(
             text = titleText,
@@ -139,8 +130,9 @@ fun Title(titleText: String, primaryColor: Color) {
 }
 
 @Composable
-fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) -> Unit) {
-    val primaryColor = Color(0xFF41817C)
+fun SelectBudgetType(
+    selectedType: BudgetType, onBudgetTypeChange: (BudgetType) -> Unit
+) {
 
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
@@ -162,8 +154,7 @@ fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) 
                     disabledUnselectedColor = Color.Black
                 ),
                 selected = selectedType == BudgetType.AUTOMATIC,
-                onClick = { onBudgetTypeChange(BudgetType.AUTOMATIC) }
-            )
+                onClick = { onBudgetTypeChange(BudgetType.AUTOMATIC) })
             Text("Automatic")
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -176,16 +167,14 @@ fun SelectBudgetType(selectedType: BudgetType, onBudgetTypeChange: (BudgetType) 
                     disabledUnselectedColor = Color.Black
                 ),
                 selected = selectedType == BudgetType.MANUAL,
-                onClick = { onBudgetTypeChange(BudgetType.MANUAL) }
-            )
+                onClick = { onBudgetTypeChange(BudgetType.MANUAL) })
             Text("Manual")
         }
     }
 }
 
 enum class BudgetDialogMode {
-    ADD,
-    EDIT
+    ADD, EDIT
 }
 
 

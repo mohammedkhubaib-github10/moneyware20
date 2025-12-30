@@ -35,11 +35,11 @@ import com.example.presentation.viewmodel.LoginViewModel
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.google
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
+import primaryColor
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = koinViewModel(),
+    viewModel: LoginViewModel,
     onNextClick: () -> Unit = {},
     onGoogleClick: () -> Unit = {}
 ) {
@@ -78,7 +78,7 @@ private fun HeaderSection() {
             text = "Let’s get started with Moneyware",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF41817C),
+            color = primaryColor,
             modifier = Modifier.padding(vertical = 16.dp)
         )
     }
@@ -142,7 +142,7 @@ private fun PrimaryButton(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF41817C),
+            containerColor = primaryColor,
             contentColor = Color.White
         )
     ) {

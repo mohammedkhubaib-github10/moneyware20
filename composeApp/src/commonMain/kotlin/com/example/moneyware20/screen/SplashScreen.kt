@@ -22,21 +22,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.presentation.viewmodel.LoginViewModel
+import containerColor
 import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
+import primaryColor
 
 @Composable
-fun SplashScreen(onNavigation: (String?) -> Unit, viewModel: LoginViewModel = koinViewModel()) {
+fun SplashScreen(
+    onNavigation: (String?) -> Unit,
+    viewModel: LoginViewModel
+) {
     val coroutine = rememberCoroutineScope()
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
-            modifier = Modifier.background(
-                color = Color(0xFF41817C),
-                shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
-            ).weight(0.75f).fillMaxSize(), contentAlignment = Alignment.Center
+            modifier = Modifier
+                .background(
+                    color = primaryColor,
+                    shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
+                )
+                .weight(0.75f).fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             AppLogo()
         }
@@ -59,7 +66,11 @@ fun SplashScreen(onNavigation: (String?) -> Unit, viewModel: LoginViewModel = ko
 fun AppLogo() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
-            modifier = Modifier.background(color = Color.LightGray, shape = CircleShape)
+            modifier = Modifier
+                .background(
+                    color = Color.LightGray,
+                    shape = CircleShape
+                )
                 .size(160.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -77,8 +88,8 @@ fun AppLogo() {
         )
         ContainedLoadingIndicator(
             modifier = Modifier.padding(24.dp),
-            containerColor = Color(0xFFEEF8F7),
-            indicatorColor = Color(0xFF41817C)
+            containerColor = containerColor,
+            indicatorColor = primaryColor
         )
     }
 }

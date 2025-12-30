@@ -12,6 +12,7 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.moneyware20.screen.LoginScreen
 import com.example.moneyware20.screen.SplashScreen
 import com.example.moneyware20.screen.homescreen.HomeScreen
+import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -43,7 +44,8 @@ fun NavigationRoot(
             when (key) {
                 is Route.Splash -> {
                     NavEntry(key) {
-                        SplashScreen(onNavigation = { name ->
+                        val viewModel: LoginViewModel = koinViewModel()
+                        SplashScreen(viewModel = viewModel, onNavigation = { name ->
                             backStack.removeLast()
                             if (name != null) backStack.add(Route.Home(name))
                             else backStack.add(Route.Login)
@@ -71,7 +73,8 @@ fun NavigationRoot(
 
                 is Route.Home -> {
                     NavEntry(key) {
-                        HomeScreen(key.user)
+                        val viewModel: BudgetViewModel = koinViewModel()
+                        HomeScreen(viewModel = viewModel, userName = key.user)
                     }
                 }
 

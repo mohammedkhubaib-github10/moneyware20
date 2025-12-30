@@ -18,13 +18,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import com.example.presentation.viewmodel.BudgetViewModel
+import otherColor
+import primaryColor
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun Fab(viewModel: BudgetViewModel) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     val animatedColor by animateColorAsState(
-        targetValue = if (expanded) Color(0xFF41817C) else Color(0xFF2C6B65)
+        targetValue = if (expanded) primaryColor else otherColor
     )
     FloatingActionButtonMenu(
         expanded = expanded,
@@ -50,7 +52,7 @@ fun Fab(viewModel: BudgetViewModel) {
                 )
             },
             text = { Text("Manual Entry", color = Color.White) },
-            containerColor = Color(0xFF41817C)
+            containerColor = primaryColor
         )
     }
 }

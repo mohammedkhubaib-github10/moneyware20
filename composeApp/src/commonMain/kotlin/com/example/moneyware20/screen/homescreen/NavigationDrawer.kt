@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.DrawerItem
+import primaryColor
 
 @Composable
 fun MoneywareDrawer(
@@ -45,7 +46,6 @@ fun MoneywareDrawer(
     onSignOutClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val primaryColor = Color(0xFF41817C)
 
     ModalNavigationDrawer(
         drawerState = drawerState,

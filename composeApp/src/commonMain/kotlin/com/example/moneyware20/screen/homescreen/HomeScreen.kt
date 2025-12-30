@@ -25,11 +25,10 @@ import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun HomeScreen(userName: String, viewModel: BudgetViewModel = koinViewModel()) {
+fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val dialog by viewModel.dialogState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
