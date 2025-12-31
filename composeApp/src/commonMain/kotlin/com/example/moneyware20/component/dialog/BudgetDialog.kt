@@ -38,7 +38,8 @@ fun BudgetDialog(
     onBudgetTypeChange: (BudgetType) -> Unit,
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit,
-    error: String?
+    error: String?,
+    enabled: Boolean
 ) {
 
     val titleText = if (mode == BudgetDialogMode.ADD) {
@@ -108,7 +109,7 @@ fun BudgetDialog(
                         containerColor = primaryColor, contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(12.dp),
-                    enabled = !budgetAmount.isBlank() && !budgetName.isBlank()
+                    enabled = !budgetName.isBlank() && !budgetAmount.isBlank() && enabled
                 ) {
                     Text(confirmButtonText)
                 }

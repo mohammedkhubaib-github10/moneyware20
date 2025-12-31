@@ -20,6 +20,13 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
     private val _dialogState = MutableStateFlow(false)
     val dialogState: StateFlow<Boolean> = _dialogState
 
+    private val _buttonState = MutableStateFlow(true)
+    val buttonState: StateFlow<Boolean> = _buttonState
+
+    fun toggleButton(boolean: Boolean) {
+        _buttonState.value = boolean
+    }
+
     /* ---------------- UI Events ---------------- */
     fun toggleDialog(dialog: Boolean) {
         _dialogState.value = dialog
@@ -64,11 +71,13 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
                 is CreateBudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
                     toggleDialog(false)
+                    toggleButton(true)
                 }
 
                 is CreateBudgetResult.Error -> {
                     val message = result.error.toUiMessage()
                     onError(message)
+                    toggleButton(true)
                 }
             }
         }

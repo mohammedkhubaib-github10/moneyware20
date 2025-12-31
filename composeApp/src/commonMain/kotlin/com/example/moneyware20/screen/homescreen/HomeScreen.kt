@@ -26,6 +26,7 @@ import org.jetbrains.compose.resources.painterResource
 fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val dialog by viewModel.dialogState.collectAsState()
+    val buttonState by viewModel.buttonState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
@@ -68,13 +69,15 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
             },
             onBudgetTypeChange = { viewModel.onBudgetTypeChange(it) },
             onConfirmClick = {
+                viewModel.toggleButton(false)
                 viewModel.onAddBudget()
             },
             onCancelClick = {
                 viewModel.onCancel()
                 viewModel.toggleDialog(false)
             },
-            error = uiState.error
+            error = uiState.error,
+            enabled = buttonState
         )
     }
 }
