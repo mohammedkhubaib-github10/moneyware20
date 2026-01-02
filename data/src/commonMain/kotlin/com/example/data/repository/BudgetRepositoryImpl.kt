@@ -1,38 +1,41 @@
 package com.example.data.repository
 
+import com.example.data.data_source.BudgetRemoteDataSource
+import com.example.data.mapper.toDomain
+import com.example.data.mapper.toDto
 import com.example.domain.entity.Budget
 import com.example.domain.repository.BudgetRepository
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.firestore.firestore
 
-class BudgetRepositoryImpl : BudgetRepository {
+class BudgetRepositoryImpl(private val budgetRemoteDataSource: BudgetRemoteDataSource) :
+    BudgetRepository {
     override suspend fun createBudget(budget: Budget): Budget {
-        val db = Firebase.firestore
-        val b= hashMapOf(
-            "Budget Name" to budget.budgetName,
-            "Budget Amount" to budget.budgetAmount
-        )
-        val result = db.collection("user").add(b)
-        return budget
+        val budgetDto = budget.toDto()
+        val id = budgetRemoteDataSource.createBudget(budgetDto)
+        return budget.copy(budgetId = id)
     }
 
     override suspend fun updateBudget(budget: Budget) {
-        TODO("Not yet implemented")
+        val budgetDto = budget.toDto()
+        budgetRemoteDataSource.updateBudget(budget.budgetId, budgetDto)
     }
 
     override suspend fun getBudgetById(budgetId: String): Budget? {
-        TODO("Not yet implemented")
+        val budgetDto = budgetRemoteDataSource.getBudgetById(budgetId)
+        val budget = budgetDto?.toDomain(budgetId)
+        return budget
     }
 
     override suspend fun getBudgets(): List<Budget> {
-        TODO("Not yet implemented")
+        val list = budgetRemoteDataSource.getBudgets()
+        val newList = list.map { (id, dto) -> dto.toDomain(id) }
+        return newList
     }
 
     override suspend fun isBudgetNameExists(name: String): Boolean {
-        return false
+        return budgetRemoteDataSource.isBudgetNameExists(name)
     }
 
     override suspend fun deleteBudget(budgetId: String) {
-        TODO("Not yet implemented")
+        budgetRemoteDataSource.deleteBudget(budgetId)
     }
 }

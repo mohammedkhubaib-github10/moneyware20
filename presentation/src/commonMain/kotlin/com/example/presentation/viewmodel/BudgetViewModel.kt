@@ -5,7 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Budget
 import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
+import com.example.domain.usecase.Budget.GetBudgetUsecase
+import com.example.presentation.mapper.toUIModel
 import com.example.presentation.mapper.toUiMessage
+import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_state.BudgetType
 import com.example.presentation.ui_state.BudgetUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,16 +16,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : ViewModel() {
+class BudgetViewModel(
+    private val createBudgetUsecase: CreateBudgetUsecase,
+    private val getBudgetUsecase: GetBudgetUsecase
+) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
-    val budgetUIState: StateFlow<BudgetUIState> = _budgetUIState.asStateFlow()
+    val budgetUIState = _budgetUIState.asStateFlow()
+
+    private val _showLoading = MutableStateFlow(true)
+    val showLoading = _showLoading.asStateFlow()
     private val _dialogState = MutableStateFlow(false)
-    val dialogState: StateFlow<Boolean> = _dialogState
+    val dialogState = _dialogState.asStateFlow()
 
     private val _buttonState = MutableStateFlow(true)
-    val buttonState: StateFlow<Boolean> = _buttonState
-
+    val buttonState = _buttonState.asStateFlow()
+    private val _budgetList = MutableStateFlow<List<BudgetUIModel>>(emptyList())
+    val budgetList = _budgetList.asStateFlow()
     fun toggleButton(boolean: Boolean) {
         _buttonState.value = boolean
     }
@@ -72,6 +82,7 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
                     _budgetUIState.value = BudgetUIState()
                     toggleDialog(false)
                     toggleButton(true)
+                    showBudgets()
                 }
 
                 is CreateBudgetResult.Error -> {
@@ -83,6 +94,15 @@ class BudgetViewModel(private val createBudgetUsecase: CreateBudgetUsecase) : Vi
         }
     }
 
+    fun showBudgets() {
+        viewModelScope.launch {
+            val list = getBudgetUsecase()
+            _budgetList.value = list.map {
+                it.toUIModel()
+            }
+            _showLoading.value = false
+        }
+    }
 
     fun onCancel() {
         _budgetUIState.value = BudgetUIState()

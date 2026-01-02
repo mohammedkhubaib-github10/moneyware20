@@ -2,9 +2,15 @@ package com.example.moneyware20.screen.homescreen
 
 import BudgetDialog
 import BudgetDialogMode
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,23 +19,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.MainHeader
 import com.example.presentation.viewmodel.BudgetViewModel
+import containerColor
 import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
+import primaryColor
 
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val dialog by viewModel.dialogState.collectAsState()
+    val loading by viewModel.showLoading.collectAsState()
     val buttonState by viewModel.buttonState.collectAsState()
+    val budgetList by viewModel.budgetList.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
+    viewModel.showBudgets()
     MoneywareDrawer(
         drawerState = drawerState,
         userName = "Mohammed Khubaib C",
@@ -49,7 +63,24 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
             floatingActionButton = {
                 Fab(viewModel)
             }
-        ) { it ->
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (loading) {
+                    ContainedLoadingIndicator(
+                        modifier = Modifier.padding(24.dp),
+                        containerColor = containerColor,
+                        indicatorColor = primaryColor
+                    )
+                } else {
+                    if (budgetList.isNotEmpty()) BudgetList(budgetList)
+                    else Text(text = "No Result", style = MaterialTheme.typography.bodyLarge)
+                }
+            }
         }
     }
     if (dialog) {
