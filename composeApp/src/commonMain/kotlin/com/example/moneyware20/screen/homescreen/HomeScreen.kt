@@ -36,14 +36,10 @@ import primaryColor
 @Composable
 fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
     val uiState by viewModel.budgetUIState.collectAsState()
-    val dialog by viewModel.dialogState.collectAsState()
-    val loading by viewModel.showLoading.collectAsState()
-    val buttonState by viewModel.buttonState.collectAsState()
     val budgetList by viewModel.budgetList.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
-    viewModel.showBudgets()
     MoneywareDrawer(
         drawerState = drawerState,
         userName = "Mohammed Khubaib C",
@@ -70,7 +66,7 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                if (loading) {
+                if (uiState.isLoading) {
                     ContainedLoadingIndicator(
                         modifier = Modifier.padding(24.dp),
                         containerColor = containerColor,
@@ -83,7 +79,7 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
             }
         }
     }
-    if (dialog) {
+    if (uiState.dialogState) {
         BudgetDialog(
             mode = mode,
             budgetName = uiState.budgetName,
@@ -100,15 +96,15 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
             },
             onBudgetTypeChange = { viewModel.onBudgetTypeChange(it) },
             onConfirmClick = {
-                viewModel.toggleButton(false)
+                viewModel.setButton(false)
                 viewModel.onAddBudget()
             },
             onCancelClick = {
                 viewModel.onCancel()
-                viewModel.toggleDialog(false)
+                viewModel.setDialog(false)
             },
             error = uiState.error,
-            enabled = buttonState
+            enabled = uiState.buttonState
         )
     }
 }

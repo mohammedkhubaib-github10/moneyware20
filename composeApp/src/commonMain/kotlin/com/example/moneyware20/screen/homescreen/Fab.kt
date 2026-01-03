@@ -43,7 +43,7 @@ fun Fab(viewModel: BudgetViewModel) {
     ) {
         // Manual Entry
         FloatingActionButtonMenuItem(
-            onClick = { expanded = false; viewModel.toggleDialog(true) },
+            onClick = { expanded = false; viewModel.setDialog(true) },
             icon = {
                 Icon(
                     Icons.Filled.Edit,

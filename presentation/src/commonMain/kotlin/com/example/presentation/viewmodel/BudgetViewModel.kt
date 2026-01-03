@@ -22,24 +22,22 @@ class BudgetViewModel(
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
     val budgetUIState = _budgetUIState.asStateFlow()
-
-    private val _showLoading = MutableStateFlow(true)
-    val showLoading = _showLoading.asStateFlow()
-    private val _dialogState = MutableStateFlow(false)
-    val dialogState = _dialogState.asStateFlow()
-
-    private val _buttonState = MutableStateFlow(true)
-    val buttonState = _buttonState.asStateFlow()
     private val _budgetList = MutableStateFlow<List<BudgetUIModel>>(emptyList())
     val budgetList = _budgetList.asStateFlow()
-    fun toggleButton(boolean: Boolean) {
-        _buttonState.value = boolean
+
+    init {
+        getBudgets()
+    }
+
+    fun setButton(boolean: Boolean) {
+        _budgetUIState.value = _budgetUIState.value.copy(buttonState = boolean)
     }
 
     /* ---------------- UI Events ---------------- */
-    fun toggleDialog(dialog: Boolean) {
-        _dialogState.value = dialog
+    fun setDialog(boolean: Boolean) {
+        _budgetUIState.value = _budgetUIState.value.copy(dialogState = boolean)
     }
+
 
     fun onBudgetNameChange(name: String) {
         _budgetUIState.value = _budgetUIState.value.copy(
@@ -79,27 +77,28 @@ class BudgetViewModel(
 
                 is CreateBudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
-                    toggleDialog(false)
-                    toggleButton(true)
-                    showBudgets()
+                    setDialog(false)
+                    setButton(true)
+                    getBudgets()
                 }
 
                 is CreateBudgetResult.Error -> {
                     val message = result.error.toUiMessage()
                     onError(message)
-                    toggleButton(true)
+                    setButton(true)
                 }
             }
         }
     }
 
-    fun showBudgets() {
+    fun getBudgets() {
         viewModelScope.launch {
             val list = getBudgetUsecase("khubaib")
             _budgetList.value = list.map {
                 it.toUIModel()
             }
-            _showLoading.value = false
+            _budgetUIState.value = _budgetUIState.value.copy(isLoading = false)
+
         }
     }
 
