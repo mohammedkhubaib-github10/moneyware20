@@ -60,7 +60,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.androidx.lifecycle.runtimeCompose)
                 // Add KMP dependencies here
             }
         }
@@ -73,6 +72,10 @@ kotlin {
 
         androidMain {
             dependencies {
+                implementation(libs.firebase.auth)
+                implementation(project.dependencies.platform(libs.android.firebase.bom))
+                implementation(libs.androidx.credentials)
+                implementation(libs.googleid)
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.

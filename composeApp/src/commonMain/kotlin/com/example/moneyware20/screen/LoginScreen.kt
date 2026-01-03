@@ -39,9 +39,7 @@ import primaryColor
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
-    onNextClick: () -> Unit = {},
-    onGoogleClick: () -> Unit = {}
+    viewModel: LoginViewModel
 ) {
     val uiState by viewModel.loginUiState.collectAsState()
     Column(
@@ -55,8 +53,6 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         ContentSection(
-            onNextClick = onNextClick,
-            onGoogleClick = onGoogleClick,
             uiState = uiState,
             viewModel = viewModel
         )
@@ -86,8 +82,6 @@ private fun HeaderSection() {
 
 @Composable
 private fun ContentSection(
-    onNextClick: () -> Unit,
-    onGoogleClick: () -> Unit,
     uiState: LoginUIState,
     viewModel: LoginViewModel
 ) {
@@ -127,25 +121,23 @@ private fun ContentSection(
         )
 
         PrimaryButton(
-            text = "Next",
-            onClick = onNextClick
+            text = "Next"
         )
 
         OrDivider()
 
         GoogleSignInButton(
-            onClick = onGoogleClick
+            viewModel = viewModel
         )
     }
 }
 
 @Composable
 private fun PrimaryButton(
-    text: String,
-    onClick: () -> Unit
+    text: String
 ) {
     Button(
-        onClick = onClick,
+        onClick = {},
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = primaryColor,
@@ -174,10 +166,12 @@ private fun OrDivider() {
 
 @Composable
 private fun GoogleSignInButton(
-    onClick: () -> Unit
+    viewModel: LoginViewModel
 ) {
     Button(
-        onClick = onClick,
+        onClick = {
+            viewModel.onGoogle()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .border(

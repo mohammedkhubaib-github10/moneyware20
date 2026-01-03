@@ -31,7 +31,7 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":domain")
 include(":presentation")
-include(":authentication")
 include(":di")
 include(":data")
 include(":firebase_firestore")
+include(":authentication")

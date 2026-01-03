@@ -1,18 +1,15 @@
-package com.example.moneyware20.navigation
-
-
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface Route: NavKey {
+sealed interface Route : NavKey {
 
     @Serializable
-    data object Splash: Route, NavKey
+    data object Splash : Route
 
     @Serializable
-    data object Login: Route, NavKey
+    data object Login : Route
 
     @Serializable
-    data class Home(val user: String): Route, NavKey
+    data class Home(val user: String) : Route
 }

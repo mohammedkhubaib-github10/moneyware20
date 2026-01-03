@@ -14,16 +14,17 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.presentation.ui_model.UserUIModel
 import com.example.presentation.viewmodel.LoginViewModel
 import containerColor
-import kotlinx.coroutines.launch
 import moneyware20.composeapp.generated.resources.Res
 import moneyware20.composeapp.generated.resources.logo
 import org.jetbrains.compose.resources.painterResource
@@ -31,10 +32,10 @@ import primaryColor
 
 @Composable
 fun SplashScreen(
-    onNavigation: (String?) -> Unit,
+    onNavigation: (UserUIModel?) -> Unit,
     viewModel: LoginViewModel
 ) {
-    val coroutine = rememberCoroutineScope()
+    val uiState by viewModel.loginUiState.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -54,11 +55,7 @@ fun SplashScreen(
             modifier = Modifier.padding(24.dp)
         )
     }
-    coroutine.launch {
-        val user: String? = viewModel.authenticate()
-        onNavigation(user)
-    }
-
+    onNavigation(uiState.user)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)

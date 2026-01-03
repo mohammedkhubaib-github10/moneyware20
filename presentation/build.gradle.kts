@@ -67,7 +67,6 @@ kotlin {
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.kotlinx.datetime)
                 implementation(project(":domain"))
-                implementation(project(":authentication"))
                 // Add KMP dependencies here
             }
         }

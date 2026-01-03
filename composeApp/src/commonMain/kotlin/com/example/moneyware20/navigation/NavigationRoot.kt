@@ -1,7 +1,11 @@
 package com.example.moneyware20.navigation
 
 
+import Route
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -22,17 +26,18 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
-    val backStack = rememberNavBackStack(
-        configuration = SavedStateConfiguration {
-            serializersModule = SerializersModule {
-                polymorphic(NavKey::class) {
-                    subclass(Route.Splash::class, Route.Splash.serializer())
-                    subclass(Route.Home::class, Route.Home.serializer())
-                }
+    val backStack = rememberNavBackStack(configuration = SavedStateConfiguration {
+        serializersModule = SerializersModule {
+            polymorphic(NavKey::class) {
+                subclass(
+                    Route.Splash::class,
+                    Route.Splash.serializer()
+                )
+                subclass(Route.Login::class, Route.Login.serializer())
+                subclass(Route.Home::class, Route.Home.serializer())
             }
-        },
-        Route.Splash
-    )
+        }
+    }, Route.Splash)
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
@@ -45,9 +50,9 @@ fun NavigationRoot(
                 is Route.Splash -> {
                     NavEntry(key) {
                         val viewModel: LoginViewModel = koinViewModel()
-                        SplashScreen(viewModel = viewModel, onNavigation = { name ->
+                        SplashScreen(viewModel = viewModel, onNavigation = { user ->
                             backStack.removeLast()
-                            if (name != null) backStack.add(Route.Home(name))
+                            if (user != null) backStack.add(Route.Home(user.userId))
                             else backStack.add(Route.Login)
                         })
 
@@ -58,16 +63,16 @@ fun NavigationRoot(
                 is Route.Login -> {
                     NavEntry(key) {
                         val viewModel: LoginViewModel = koinViewModel()
+                        val uiState by viewModel.loginUiState.collectAsState()
+
+                        LaunchedEffect(uiState.user) {
+                            uiState.user?.let { user ->
+                                backStack.add(Route.Home(user.userId))
+                            }
+                        }
                         LoginScreen(
-                            viewModel = viewModel,
-                            onNextClick = {
-                                val user: String = viewModel.onNext()
-                                backStack.add(Route.Home(user))
-                            },
-                            onGoogleClick = {
-                                val user: String = viewModel.onGoogle()
-                                backStack.add(Route.Home(user))
-                            })
+                            viewModel = viewModel
+                        )
                     }
                 }
 

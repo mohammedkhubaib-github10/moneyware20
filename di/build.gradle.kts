@@ -68,6 +68,7 @@ kotlin {
                 implementation(project(":presentation"))
                 implementation(project(":domain"))
                 implementation(project(":data"))
+                implementation(project(":authentication"))
 
                 // Add KMP dependencies here
             }
