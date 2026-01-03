@@ -18,6 +18,7 @@ import com.example.moneyware20.screen.SplashScreen
 import com.example.moneyware20.screen.homescreen.HomeScreen
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
+import com.example.presentation.viewmodel.SplashViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.viewmodel.koinViewModel
@@ -49,13 +50,20 @@ fun NavigationRoot(
             when (key) {
                 is Route.Splash -> {
                     NavEntry(key) {
-                        val viewModel: LoginViewModel = koinViewModel()
-                        SplashScreen(viewModel = viewModel, onNavigation = { user ->
-                            backStack.removeLast()
-                            if (user != null) backStack.add(Route.Home(user.userId))
-                            else backStack.add(Route.Login)
-                        })
+                        val viewModel: SplashViewModel = koinViewModel()
+                        val uiState by viewModel.uiState.collectAsState()
+                        LaunchedEffect(uiState) {
+                            if (!uiState.isLoading) {
+                                backStack.removeLast()
+                                if (uiState.user != null) {
+                                    backStack.add(Route.Home(uiState.user!!.userId))
+                                } else {
+                                    backStack.add(Route.Login)
+                                }
+                            }
+                        }
 
+                        SplashScreen()
 
                     }
                 }

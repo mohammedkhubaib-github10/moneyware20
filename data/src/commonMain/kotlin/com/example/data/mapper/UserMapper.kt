@@ -1,5 +1,6 @@
 package com.example.data.mapper
 
+import com.example.authentication.UserData
 import com.example.data.dto.UserDto
 import com.example.domain.entity.User
 
@@ -13,4 +14,10 @@ fun UserDto.toDomain() = User(
     userId = userId,
     userName = userName,
     profilePicUrl = profilePic
+)
+
+fun UserData.toDomain() = User(
+    userId = userId,
+    userName = username,
+    profilePicUrl = profilePictureUrl
 )

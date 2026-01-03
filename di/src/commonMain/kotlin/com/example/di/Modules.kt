@@ -11,8 +11,10 @@ import com.example.domain.usecase.AuthenticateUsecase
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.ValidateBudgetUsecase
+import com.example.domain.usecase.expense.GetUserUsecase
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
+import com.example.presentation.viewmodel.SplashViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -22,6 +24,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModelOf(::BudgetViewModel)
     viewModelOf(::LoginViewModel)
+    viewModelOf(::SplashViewModel)
 
 }
 
@@ -38,4 +41,5 @@ val domainModule = module {
     factoryOf(::ValidateBudgetUsecase)
     factoryOf(::GetBudgetUsecase)
     factoryOf(::AuthenticateUsecase)
+    factoryOf(::GetUserUsecase)
 }

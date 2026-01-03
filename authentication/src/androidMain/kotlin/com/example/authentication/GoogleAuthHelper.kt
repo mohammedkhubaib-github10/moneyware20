@@ -107,6 +107,19 @@ actual class GoogleAuthHelper(
                 }
         }
 
+    actual fun isSignedIn(): Boolean {
+        return firebaseAuth.currentUser != null
+    }
+
+    actual fun getCurrentUser(): UserData? {
+        val user = firebaseAuth.currentUser ?: return null
+        return UserData(
+            userId = user.uid,
+            username = user.displayName,
+            profilePictureUrl = user.photoUrl?.toString()
+        )
+    }
+
     actual fun signOut() {
         firebaseAuth.signOut()
     }
