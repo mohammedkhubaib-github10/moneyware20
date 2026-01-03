@@ -8,34 +8,34 @@ import com.example.domain.repository.BudgetRepository
 
 class BudgetRepositoryImpl(private val budgetRemoteDataSource: BudgetRemoteDataSource) :
     BudgetRepository {
-    override suspend fun createBudget(budget: Budget): Budget {
+    override suspend fun createBudget(userId: String, budget: Budget): Budget {
         val budgetDto = budget.toDto()
-        val id = budgetRemoteDataSource.createBudget(budgetDto)
+        val id = budgetRemoteDataSource.createBudget(userId, budgetDto)
         return budget.copy(budgetId = id)
     }
 
-    override suspend fun updateBudget(budget: Budget) {
+    override suspend fun updateBudget(userId: String, budget: Budget) {
         val budgetDto = budget.toDto()
-        budgetRemoteDataSource.updateBudget(budget.budgetId, budgetDto)
+        budgetRemoteDataSource.updateBudget(userId, budget.budgetId, budgetDto)
     }
 
-    override suspend fun getBudgetById(budgetId: String): Budget? {
-        val budgetDto = budgetRemoteDataSource.getBudgetById(budgetId)
+    override suspend fun getBudgetById(userId: String, budgetId: String): Budget? {
+        val budgetDto = budgetRemoteDataSource.getBudgetById(userId, budgetId)
         val budget = budgetDto?.toDomain(budgetId)
         return budget
     }
 
-    override suspend fun getBudgets(): List<Budget> {
-        val list = budgetRemoteDataSource.getBudgets()
+    override suspend fun getBudgets(userId: String): List<Budget> {
+        val list = budgetRemoteDataSource.getBudgets(userId)
         val newList = list.map { (id, dto) -> dto.toDomain(id) }
         return newList
     }
 
-    override suspend fun isBudgetNameExists(name: String): Boolean {
-        return budgetRemoteDataSource.isBudgetNameExists(name)
+    override suspend fun isBudgetNameExists(userId: String, name: String): Boolean {
+        return budgetRemoteDataSource.isBudgetNameExists(userId, name)
     }
 
-    override suspend fun deleteBudget(budgetId: String) {
-        budgetRemoteDataSource.deleteBudget(budgetId)
+    override suspend fun deleteBudget(userId: String, budgetId: String) {
+        budgetRemoteDataSource.deleteBudget(userId, budgetId)
     }
 }

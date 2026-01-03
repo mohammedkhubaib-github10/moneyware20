@@ -12,7 +12,6 @@ import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_state.BudgetType
 import com.example.presentation.ui_state.BudgetUIState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -76,7 +75,7 @@ class BudgetViewModel(
                 budgetAmount = uiState.budgetAmount.toDouble()
             )
 
-            when (val result = createBudgetUsecase(budget)) {
+            when (val result = createBudgetUsecase("khubaib", budget)) {
 
                 is CreateBudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
@@ -96,7 +95,7 @@ class BudgetViewModel(
 
     fun showBudgets() {
         viewModelScope.launch {
-            val list = getBudgetUsecase()
+            val list = getBudgetUsecase("khubaib")
             _budgetList.value = list.map {
                 it.toUIModel()
             }

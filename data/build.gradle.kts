@@ -66,6 +66,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
 
                 implementation(project(":domain"))
+                implementation(project(":authentication"))
                 // Add KMP dependencies here
             }
         }

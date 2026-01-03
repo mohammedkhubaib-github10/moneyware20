@@ -7,13 +7,14 @@ class CreateBudgetUsecase(
     private val budgetRepository: BudgetRepository,
     private val validateBudgetUsecase: ValidateBudgetUsecase
 ) {
-    suspend operator fun invoke(budget: Budget): CreateBudgetResult {
+    suspend operator fun invoke(userId: String, budget: Budget): CreateBudgetResult {
 
-        return when (val validation = validateBudgetUsecase(budget)) {
+        return when (val validation = validateBudgetUsecase(userId, budget)) {
             BudgetValidationResult.Valid -> {
-                val created = budgetRepository.createBudget(budget)
+                val created = budgetRepository.createBudget(userId, budget)
                 CreateBudgetResult.Success(created)
             }
+
             is BudgetValidationResult.Error -> {
                 CreateBudgetResult.Error(validation)
             }

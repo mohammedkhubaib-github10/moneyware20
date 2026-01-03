@@ -6,13 +6,13 @@ import com.example.domain.repository.BudgetRepository
 class ValidateBudgetUsecase(
     private val budgetRepository: BudgetRepository
 ) {
-    suspend operator fun invoke(budget: Budget): BudgetValidationResult {
+    suspend operator fun invoke(userId: String, budget: Budget): BudgetValidationResult {
 
         if (budget.budgetAmount <= 0) {
             return BudgetValidationResult.Error.InvalidAmount
         }
 
-        if (budgetRepository.isBudgetNameExists(budget.budgetName)) {
+        if (budgetRepository.isBudgetNameExists(userId = userId, budget.budgetName)) {
             return BudgetValidationResult.Error.DuplicateName
         }
 

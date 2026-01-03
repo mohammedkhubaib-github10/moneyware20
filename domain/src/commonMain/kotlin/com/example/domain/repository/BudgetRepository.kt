@@ -4,15 +4,15 @@ import com.example.domain.entity.Budget
 
 interface BudgetRepository {
 
-    suspend fun createBudget(budget: Budget): Budget
+    suspend fun createBudget(userId: String, budget: Budget): Budget
 
-    suspend fun updateBudget(budget: Budget)
+    suspend fun updateBudget(userId: String, budget: Budget)
 
-    suspend fun getBudgetById(budgetId: String): Budget?
+    suspend fun getBudgetById(userId: String, budgetId: String): Budget?
 
-    suspend fun getBudgets(): List<Budget>
+    suspend fun getBudgets(userId: String): List<Budget>
 
-    suspend fun isBudgetNameExists(name: String): Boolean
+    suspend fun isBudgetNameExists(userId: String, name: String): Boolean
 
-    suspend fun deleteBudget(budgetId: String)
+    suspend fun deleteBudget(userId: String, budgetId: String)
 }

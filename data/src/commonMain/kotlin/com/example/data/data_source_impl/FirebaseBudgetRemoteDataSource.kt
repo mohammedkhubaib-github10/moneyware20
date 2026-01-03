@@ -7,19 +7,19 @@ import dev.gitlive.firebase.firestore.firestore
 
 class FirebaseBudgetRemoteDataSource : BudgetRemoteDataSource {
     val db = Firebase.firestore
-    override suspend fun createBudget(dto: BudgetDto): String {
+    override suspend fun createBudget(userId: String, dto: BudgetDto): String {
         val docRef = db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .add(dto)
         return docRef.id
     }
 
-    override suspend fun getBudgetById(id: String): BudgetDto? {
+    override suspend fun getBudgetById(userId: String, id: String): BudgetDto? {
         val snapshot = db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .document(id)
             .get()
@@ -27,10 +27,10 @@ class FirebaseBudgetRemoteDataSource : BudgetRemoteDataSource {
         return null
     }
 
-    override suspend fun getBudgets(): List<Pair<String, BudgetDto>> {
+    override suspend fun getBudgets(userId: String): List<Pair<String, BudgetDto>> {
         val snapshot = db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .get()
         val list = snapshot.documents.map { doc ->
@@ -40,29 +40,29 @@ class FirebaseBudgetRemoteDataSource : BudgetRemoteDataSource {
         return list
     }
 
-    override suspend fun isBudgetNameExists(name: String): Boolean {
+    override suspend fun isBudgetNameExists(userId: String, name: String): Boolean {
         val snapshot = db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .where { "name" equalTo name }
             .get()
         return snapshot.documents.isNotEmpty()
     }
 
-    override suspend fun updateBudget(id: String, dto: BudgetDto) {
+    override suspend fun updateBudget(userId: String, id: String, dto: BudgetDto) {
         db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .document(id)
             .set(dto)
     }
 
-    override suspend fun deleteBudget(id: String) {
+    override suspend fun deleteBudget(userId: String, id: String) {
         db
             .collection("users")
-            .document("khubaib")
+            .document(userId)
             .collection("budgets")
             .document(id)
             .delete()
