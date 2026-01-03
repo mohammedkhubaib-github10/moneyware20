@@ -75,6 +75,7 @@ fun NavigationRoot(
 
                         LaunchedEffect(uiState.user) {
                             uiState.user?.let { user ->
+                                backStack.removeLast()
                                 backStack.add(Route.Home(user.userId))
                             }
                         }

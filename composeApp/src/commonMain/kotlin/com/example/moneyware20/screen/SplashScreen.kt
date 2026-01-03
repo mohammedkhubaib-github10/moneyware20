@@ -27,8 +27,7 @@ import org.jetbrains.compose.resources.painterResource
 import primaryColor
 
 @Composable
-fun SplashScreen(
-) {
+fun SplashScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
