@@ -2,8 +2,8 @@ package com.example.di
 
 
 import com.example.authentication.GoogleAuthHelper
-import com.example.data.repository.AuthenticationRepositoryImpl
-import com.example.domain.repository.AuthenticationRepository
+import com.example.data.data_source.AuthenticationSource
+import com.example.data.data_source_impl.AuthenticationSourceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -15,8 +15,8 @@ val androidAuthModule = module {
         )
     }
 
-    single<AuthenticationRepository> {
-        AuthenticationRepositoryImpl(
+    single<AuthenticationSource> {
+        AuthenticationSourceImpl(
             googleAuthHelper = get()
         )
     }

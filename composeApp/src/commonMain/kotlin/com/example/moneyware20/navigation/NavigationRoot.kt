@@ -56,7 +56,7 @@ fun NavigationRoot(
                             if (!uiState.isLoading) {
                                 backStack.removeLast()
                                 if (uiState.user != null) {
-                                    backStack.add(Route.Home(uiState.user!!.userId))
+                                    backStack.add(Route.Home(uiState.user!!))
                                 } else {
                                     backStack.add(Route.Login)
                                 }
@@ -76,7 +76,7 @@ fun NavigationRoot(
                         LaunchedEffect(uiState.user) {
                             uiState.user?.let { user ->
                                 backStack.removeLast()
-                                backStack.add(Route.Home(user.userId))
+                                backStack.add(Route.Home(user))
                             }
                         }
                         LoginScreen(
@@ -88,7 +88,17 @@ fun NavigationRoot(
                 is Route.Home -> {
                     NavEntry(key) {
                         val viewModel: BudgetViewModel = koinViewModel()
-                        HomeScreen(viewModel = viewModel, userName = key.user)
+                        HomeScreen(
+                            viewModel = viewModel,
+                            user = key.user,
+                            onSignOutClick = {
+                                viewModel.signOut()
+                                backStack.add(Route.Login)
+
+                            }, onSettingsClick = {
+
+                            }
+                        )
                     }
                 }
 

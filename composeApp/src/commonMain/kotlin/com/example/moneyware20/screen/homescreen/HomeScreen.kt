@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.MainHeader
+import com.example.presentation.ui_model.UserUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import containerColor
 import kotlinx.coroutines.launch
@@ -34,7 +35,12 @@ import primaryColor
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
+fun HomeScreen(
+    user: UserUIModel,
+    viewModel: BudgetViewModel,
+    onSignOutClick: () -> Unit,
+    onSettingsClick: () -> Unit
+) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val budgetList by viewModel.budgetList.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -42,10 +48,10 @@ fun HomeScreen(userName: String, viewModel: BudgetViewModel) {
     var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
     MoneywareDrawer(
         drawerState = drawerState,
-        userName = "Mohammed Khubaib C",
+        userName = if (user.userName != null) user.userName!! else "User",
         profileImage = painterResource(Res.drawable.logo),
-        onSettingsClick = { /* navigate */ },
-        onSignOutClick = { /* sign out */ }
+        onSettingsClick = onSettingsClick,
+        onSignOutClick = onSignOutClick
     ) {
         Scaffold(
             topBar = {

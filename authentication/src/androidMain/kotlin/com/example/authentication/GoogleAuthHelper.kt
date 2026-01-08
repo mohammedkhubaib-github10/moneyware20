@@ -32,6 +32,7 @@ actual class GoogleAuthHelper(
         val googleIdOption = GetGoogleIdOption.Builder()
             .setServerClientId(WEB_CLIENT_ID)
             .setFilterByAuthorizedAccounts(false)
+            .setAutoSelectEnabled(true)
             .build()
 
         val request = GetCredentialRequest.Builder()

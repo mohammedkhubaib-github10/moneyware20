@@ -1,4 +1,5 @@
 import androidx.navigation3.runtime.NavKey
+import com.example.presentation.ui_model.UserUIModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,5 +12,5 @@ sealed interface Route : NavKey {
     data object Login : Route
 
     @Serializable
-    data class Home(val user: String) : Route
+    data class Home(val user: UserUIModel) : Route
 }

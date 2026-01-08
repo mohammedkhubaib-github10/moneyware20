@@ -1,33 +1,25 @@
 package com.example.data.repository
 
-import com.example.authentication.GoogleAuthHelper
-import com.example.data.mapper.toDomain
+import com.example.data.data_source.AuthenticationSource
 import com.example.domain.entity.User
 import com.example.domain.repository.AuthenticationRepository
 
-class AuthenticationRepositoryImpl(private val googleAuthHelper: GoogleAuthHelper) :
+class AuthenticationRepositoryImpl(private val authenticationSource: AuthenticationSource) :
     AuthenticationRepository {
     override suspend fun googleAuthentication(): User? {
-        return googleAuthHelper.signInGoogle().fold(
-            onSuccess = { userData ->
-                userData.toDomain()
-            },
-            onFailure = {
-                null
-            }
-        )
+        return authenticationSource.signInGoogle()
     }
 
     override fun isUserSignedIn(): Boolean {
-        return googleAuthHelper.isSignedIn()
+        return authenticationSource.isSignedIn()
     }
 
     override fun getCurrentUser(): User? {
-        return googleAuthHelper.getCurrentUser()?.toDomain()
+        return authenticationSource.getCurrentUser()
     }
 
     override fun signOut() {
-        googleAuthHelper.signOut()
+        authenticationSource.signOut()
     }
 
 }
