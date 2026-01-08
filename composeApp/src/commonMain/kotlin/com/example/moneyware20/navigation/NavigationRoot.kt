@@ -54,23 +54,18 @@ fun NavigationRoot(
                 is Route.Splash -> {
                     NavEntry(key) {
                         val viewModel: SplashViewModel = koinViewModel()
-                        val uiState by viewModel.uiState.collectAsState()
                         val authState: AuthState = getKoin().get()
                         val user by authState.user.collectAsState()
-                        LaunchedEffect(uiState) {
-                            if (!uiState.isLoading) {
-                                backStack.removeLast()
-                                println(user.toString())
-                                if (user != null) {
-                                    backStack.add(Route.Home(user!!))
-                                } else {
-                                    backStack.add(Route.Login)
-                                }
+                        LaunchedEffect(user) {
+                            backStack.removeLast()
+                            println(user.toString())
+                            if (user != null) {
+                                backStack.add(Route.Home(user!!))
+                            } else {
+                                backStack.add(Route.Login)
                             }
                         }
-
                         SplashScreen()
-
                     }
                 }
 

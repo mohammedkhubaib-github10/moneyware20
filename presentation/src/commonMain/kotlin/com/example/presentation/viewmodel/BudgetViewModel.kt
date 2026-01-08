@@ -6,7 +6,6 @@ import com.example.domain.entity.Budget
 import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
-import com.example.domain.usecase.GetUserUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.mapper.toUIModel
@@ -22,8 +21,7 @@ class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
     private val getBudgetUsecase: GetBudgetUsecase,
     private val signOutUsecase: SignOutUsecase,
-    private val authState: AuthState,
-    private val getUserUsecase: GetUserUsecase
+    private val authState: AuthState
 ) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
@@ -33,16 +31,16 @@ class BudgetViewModel(
     val budgetList = _budgetList.asStateFlow()
 
 
+    /* ---------------- UI Events ---------------- */
     fun setButton(boolean: Boolean) {
         _budgetUIState.value = _budgetUIState.value.copy(buttonState = boolean)
     }
 
-    /* ---------------- UI Events ---------------- */
     fun setDialog(boolean: Boolean) {
         _budgetUIState.value = _budgetUIState.value.copy(dialogState = boolean)
     }
 
-
+    // Inputs
     fun onBudgetNameChange(name: String) {
         _budgetUIState.value = _budgetUIState.value.copy(
             budgetName = name
@@ -66,6 +64,7 @@ class BudgetViewModel(
         _budgetUIState.value = _budgetUIState.value.copy(error = message)
     }
 
+    //actions
     fun onAddBudget() {
         val userId = authState.user.value?.userId ?: run {
             onError("User not logged in")
