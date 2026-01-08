@@ -7,6 +7,7 @@ import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
+import com.example.presentation.AuthState
 import com.example.presentation.mapper.toUIModel
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
@@ -19,11 +20,13 @@ import kotlinx.coroutines.launch
 class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
     private val getBudgetUsecase: GetBudgetUsecase,
-    private val signOutUsecase: SignOutUsecase
+    private val signOutUsecase: SignOutUsecase,
+    private val authState: AuthState
 ) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
     val budgetUIState = _budgetUIState.asStateFlow()
+
     private val _budgetList = MutableStateFlow<List<BudgetUIModel>>(emptyList())
     val budgetList = _budgetList.asStateFlow()
 
@@ -109,6 +112,9 @@ class BudgetViewModel(
     }
 
     fun signOut() {
+        authState.onLogout()
+        _budgetUIState.value = BudgetUIState()
+
         signOutUsecase()
     }
 }

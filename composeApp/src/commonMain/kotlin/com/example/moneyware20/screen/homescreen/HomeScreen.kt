@@ -37,9 +37,7 @@ import primaryColor
 @Composable
 fun HomeScreen(
     user: UserUIModel,
-    viewModel: BudgetViewModel,
-    onSignOutClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    viewModel: BudgetViewModel
 ) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val budgetList by viewModel.budgetList.collectAsState()
@@ -50,8 +48,8 @@ fun HomeScreen(
         drawerState = drawerState,
         userName = if (user.userName != null) user.userName!! else "User",
         profileImage = painterResource(Res.drawable.logo),
-        onSettingsClick = onSettingsClick,
-        onSignOutClick = onSignOutClick
+        onSettingsClick = {},
+        onSignOutClick = { viewModel.signOut() }
     ) {
         Scaffold(
             topBar = {

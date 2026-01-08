@@ -16,17 +16,20 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.moneyware20.screen.LoginScreen
 import com.example.moneyware20.screen.SplashScreen
 import com.example.moneyware20.screen.homescreen.HomeScreen
+import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
 import com.example.presentation.viewmodel.SplashViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
+
     val backStack = rememberNavBackStack(configuration = SavedStateConfiguration {
         serializersModule = SerializersModule {
             polymorphic(NavKey::class) {
@@ -71,10 +74,10 @@ fun NavigationRoot(
                 is Route.Login -> {
                     NavEntry(key) {
                         val viewModel: LoginViewModel = koinViewModel()
-                        val uiState by viewModel.loginUiState.collectAsState()
-
-                        LaunchedEffect(uiState.user) {
-                            uiState.user?.let { user ->
+                        val authState: AuthState = getKoin().get()
+                        val user by authState.user.collectAsState()
+                        LaunchedEffect(user) {
+                            user?.let { user ->
                                 backStack.removeLast()
                                 backStack.add(Route.Home(user))
                             }
@@ -88,16 +91,19 @@ fun NavigationRoot(
                 is Route.Home -> {
                     NavEntry(key) {
                         val viewModel: BudgetViewModel = koinViewModel()
+                        val authState: AuthState = getKoin().get()
+                        val user by authState.user.collectAsState()
+                        LaunchedEffect(user) {
+                            backStack.clear()
+                            if (user != null) {
+                                backStack.add(Route.Home(user!!))
+                            } else {
+                                backStack.add(Route.Login)
+                            }
+                        }
                         HomeScreen(
                             viewModel = viewModel,
-                            user = key.user,
-                            onSignOutClick = {
-                                viewModel.signOut()
-                                backStack.add(Route.Login)
-
-                            }, onSettingsClick = {
-
-                            }
+                            user = key.user
                         )
                     }
                 }

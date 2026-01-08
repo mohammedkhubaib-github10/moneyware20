@@ -15,6 +15,7 @@ import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.ValidateBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.expense.GetUserUsecase
+import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.LoginViewModel
 import com.example.presentation.viewmodel.SplashViewModel
@@ -29,6 +30,7 @@ val viewModelModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::SplashViewModel)
 
+    singleOf(::AuthState)
 }
 
 val dataModule = module {
