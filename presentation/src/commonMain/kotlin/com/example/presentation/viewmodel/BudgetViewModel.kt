@@ -6,6 +6,7 @@ import com.example.domain.entity.Budget
 import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
+import com.example.domain.usecase.GetUserUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.mapper.toUIModel
@@ -21,7 +22,8 @@ class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
     private val getBudgetUsecase: GetBudgetUsecase,
     private val signOutUsecase: SignOutUsecase,
-    private val authState: AuthState
+    private val authState: AuthState,
+    private val getUserUsecase: GetUserUsecase
 ) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
@@ -30,9 +32,6 @@ class BudgetViewModel(
     private val _budgetList = MutableStateFlow<List<BudgetUIModel>>(emptyList())
     val budgetList = _budgetList.asStateFlow()
 
-    init {
-        getBudgets()
-    }
 
     fun setButton(boolean: Boolean) {
         _budgetUIState.value = _budgetUIState.value.copy(buttonState = boolean)
@@ -68,6 +67,10 @@ class BudgetViewModel(
     }
 
     fun onAddBudget() {
+        val userId = authState.user.value?.userId ?: run {
+            onError("User not logged in")
+            return
+        }
         viewModelScope.launch {
 
             val uiState = _budgetUIState.value
@@ -78,7 +81,7 @@ class BudgetViewModel(
                 budgetAmount = uiState.budgetAmount.toDouble()
             )
 
-            when (val result = createBudgetUsecase("khubaib", budget)) {
+            when (val result = createBudgetUsecase(userId, budget)) {
 
                 is CreateBudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
@@ -97,8 +100,9 @@ class BudgetViewModel(
     }
 
     fun getBudgets() {
+        val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
-            val list = getBudgetUsecase("khubaib")
+            val list = getBudgetUsecase(userId)
             _budgetList.value = list.map {
                 it.toUIModel()
             }
@@ -114,7 +118,6 @@ class BudgetViewModel(
     fun signOut() {
         authState.onLogout()
         _budgetUIState.value = BudgetUIState()
-
         signOutUsecase()
     }
 }

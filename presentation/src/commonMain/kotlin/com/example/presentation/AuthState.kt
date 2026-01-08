@@ -9,8 +9,10 @@ class AuthState {
     private val _user = MutableStateFlow<UserUIModel?>(null)
     val user: StateFlow<UserUIModel?> = _user
 
-
-    fun onLogin(user: UserUIModel) {
+    fun putUser(user: UserUIModel?) {
+        _user.value = user
+    }
+    fun onLogin(user: UserUIModel?) {
         _user.value = user
     }
 

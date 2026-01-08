@@ -55,11 +55,14 @@ fun NavigationRoot(
                     NavEntry(key) {
                         val viewModel: SplashViewModel = koinViewModel()
                         val uiState by viewModel.uiState.collectAsState()
+                        val authState: AuthState = getKoin().get()
+                        val user by authState.user.collectAsState()
                         LaunchedEffect(uiState) {
                             if (!uiState.isLoading) {
                                 backStack.removeLast()
-                                if (uiState.user != null) {
-                                    backStack.add(Route.Home(uiState.user!!))
+                                println(user.toString())
+                                if (user != null) {
+                                    backStack.add(Route.Home(user!!))
                                 } else {
                                     backStack.add(Route.Login)
                                 }
@@ -77,6 +80,7 @@ fun NavigationRoot(
                         val authState: AuthState = getKoin().get()
                         val user by authState.user.collectAsState()
                         LaunchedEffect(user) {
+                            println(user.toString() + " login")
                             user?.let { user ->
                                 backStack.removeLast()
                                 backStack.add(Route.Home(user))
@@ -94,11 +98,12 @@ fun NavigationRoot(
                         val authState: AuthState = getKoin().get()
                         val user by authState.user.collectAsState()
                         LaunchedEffect(user) {
-                            backStack.clear()
-                            if (user != null) {
-                                backStack.add(Route.Home(user!!))
-                            } else {
+                            println(user.toString() + "  Home")
+                            if (user == null) {
+                                backStack.clear()
                                 backStack.add(Route.Login)
+                            } else {
+                                viewModel.getBudgets()
                             }
                         }
                         HomeScreen(
