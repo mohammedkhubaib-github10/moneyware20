@@ -93,7 +93,6 @@ fun HomeScreen(
             mode = mode,
             budgetName = uiState.budgetName,
             budgetAmount = uiState.budgetAmount,
-            selectedType = uiState.budgetType,
             onBudgetNameChange = { viewModel.onBudgetNameChange(it) },
             onBudgetAmountChange = { it ->
                 val filtered = it
@@ -103,7 +102,6 @@ fun HomeScreen(
                     viewModel.onBudgetAmountChange(filtered)
                 }
             },
-            onBudgetTypeChange = { viewModel.onBudgetTypeChange(it) },
             onConfirmClick = {
                 viewModel.setButton(false)
                 viewModel.onAddBudget()

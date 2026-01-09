@@ -13,7 +13,6 @@ import com.example.presentation.AuthState
 import com.example.presentation.mapper.toUIModel
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
-import com.example.presentation.ui_state.BudgetType
 import com.example.presentation.ui_state.BudgetUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,11 +57,6 @@ class BudgetViewModel(
         )
     }
 
-    fun onBudgetTypeChange(type: BudgetType) {
-        _budgetUIState.value = _budgetUIState.value.copy(
-            budgetType = type
-        )
-    }
 
     fun onError(message: String) {
         _budgetUIState.value = _budgetUIState.value.copy(error = message)

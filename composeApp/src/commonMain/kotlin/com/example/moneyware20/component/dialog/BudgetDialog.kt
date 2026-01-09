@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -24,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.moneyware20.component.MoneywareTextField
-import com.example.presentation.ui_state.BudgetType
 
 
 @Composable
@@ -32,10 +28,8 @@ fun BudgetDialog(
     mode: BudgetDialogMode,
     budgetName: String,
     budgetAmount: String,
-    selectedType: BudgetType,
     onBudgetNameChange: (String) -> Unit,
     onBudgetAmountChange: (String) -> Unit,
-    onBudgetTypeChange: (BudgetType) -> Unit,
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit,
     error: String?,
@@ -64,9 +58,7 @@ fun BudgetDialog(
             /* ---------- TITLE ---------- */
             Title(titleText, primaryColor)
 
-            Spacer(modifier = Modifier.height(16.dp))
 
-            SelectBudgetType(selectedType, onBudgetTypeChange)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -140,49 +132,6 @@ fun Title(titleText: String, primaryColor: Color) {
     }
 }
 
-@Composable
-fun SelectBudgetType(
-    selectedType: BudgetType, onBudgetTypeChange: (BudgetType) -> Unit
-) {
-
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-
-        /* ---------- BUDGET TYPE ---------- */
-        Text(
-            text = "Select budget type",
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Medium
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                colors = RadioButtonColors(
-                    selectedColor = primaryColor,
-                    unselectedColor = Color.Black,
-                    disabledSelectedColor = Color.Black,
-                    disabledUnselectedColor = Color.Black
-                ),
-                selected = selectedType == BudgetType.AUTOMATIC,
-                onClick = { onBudgetTypeChange(BudgetType.AUTOMATIC) })
-            Text("Automatic")
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            RadioButton(
-                colors = RadioButtonColors(
-                    selectedColor = primaryColor,
-                    unselectedColor = Color.Black,
-                    disabledSelectedColor = Color.Black,
-                    disabledUnselectedColor = Color.Black
-                ),
-                selected = selectedType == BudgetType.MANUAL,
-                onClick = { onBudgetTypeChange(BudgetType.MANUAL) })
-            Text("Manual")
-        }
-    }
-}
 
 enum class BudgetDialogMode {
     ADD, EDIT
