@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moneyware20.component.budget_card.BudgetInfoBox
 import com.example.moneyware20.component.budget_card.BudgetProgress
+import com.example.presentation.BudgetDialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 
@@ -70,7 +72,13 @@ fun BudgetCard(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 OverflowMenu(
-                    onEdit = { viewModel.editBudget(budget.budgetId) },
+                    onEdit = {
+                        viewModel.setDialog(true)
+                        viewModel.setBudgetDialogMode(BudgetDialogMode.EDIT)
+                        viewModel.onBudgetIdChange(budgetId = budget.budgetId)
+                        viewModel.onBudgetNameChange(budget.budgetName)
+                        viewModel.onBudgetAmountChange(budget.budgetAmount)
+                    },
                     onDelete = { viewModel.deleteBudget(budget.budgetId) })
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -78,10 +86,9 @@ fun BudgetCard(
             // Progress
             BudgetProgress(
                 spentPercent = 20f,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally).offset(y = -20.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
 
             // Info row
             Row(

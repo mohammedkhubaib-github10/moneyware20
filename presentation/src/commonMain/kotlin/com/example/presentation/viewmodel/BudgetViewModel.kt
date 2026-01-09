@@ -10,6 +10,7 @@ import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.UpdateBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.presentation.AuthState
+import com.example.presentation.BudgetDialogMode
 import com.example.presentation.mapper.toUIModel
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
@@ -43,6 +44,16 @@ class BudgetViewModel(
         _budgetUIState.value = _budgetUIState.value.copy(dialogState = boolean)
     }
 
+    fun setBudgetDialogMode(mode: BudgetDialogMode) {
+        _budgetUIState.value = _budgetUIState.value.copy(dialogMode = mode)
+    }
+
+    fun onBudgetIdChange(budgetId: String) {
+        _budgetUIState.value = _budgetUIState.value.copy(
+            budgetId = budgetId
+        )
+    }
+
     // Inputs
     fun onBudgetNameChange(name: String) {
         _budgetUIState.value = _budgetUIState.value.copy(
@@ -73,7 +84,7 @@ class BudgetViewModel(
             val uiState = _budgetUIState.value
 
             val budget = Budget(
-                budgetId = "",
+                budgetId = uiState.budgetId,
                 budgetName = uiState.budgetName,
                 budgetAmount = uiState.budgetAmount.toDouble()
             )
@@ -108,8 +119,20 @@ class BudgetViewModel(
         }
     }
 
-    fun editBudget(budgetId: String) {
+    fun onEditBudget() {
+        val userId = authState.user.value?.userId ?: return
+        viewModelScope.launch {
+            val uiState = _budgetUIState.value
 
+            val budget = Budget(
+                budgetId = uiState.budgetId,
+                budgetName = uiState.budgetName,
+                budgetAmount = uiState.budgetAmount.toDouble()
+            )
+            updateBudgetUsecase(userId, budget)
+            _budgetUIState.value = BudgetUIState()
+            getBudgets()
+        }
     }
 
     fun deleteBudget(budgetId: String) {
@@ -117,6 +140,7 @@ class BudgetViewModel(
         viewModelScope.launch {
             deleteBudgetUsecase(userId = userId, budgetId = budgetId)
             getBudgets()
+
         }
     }
 

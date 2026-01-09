@@ -1,7 +1,6 @@
 package com.example.moneyware20.screen.homescreen
 
 import BudgetDialog
-import BudgetDialogMode
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,14 +14,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.MainHeader
+import com.example.presentation.BudgetDialogMode
 import com.example.presentation.ui_model.UserUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import containerColor
@@ -43,7 +40,6 @@ fun HomeScreen(
     val budgetList by viewModel.budgetList.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    var mode by rememberSaveable { mutableStateOf(BudgetDialogMode.ADD) }
     MoneywareDrawer(
         drawerState = drawerState,
         userName = if (user.userName != null) user.userName!! else "User",
@@ -90,7 +86,7 @@ fun HomeScreen(
     }
     if (uiState.dialogState) {
         BudgetDialog(
-            mode = mode,
+            mode = uiState.dialogMode,
             budgetName = uiState.budgetName,
             budgetAmount = uiState.budgetAmount,
             onBudgetNameChange = { viewModel.onBudgetNameChange(it) },
@@ -104,7 +100,12 @@ fun HomeScreen(
             },
             onConfirmClick = {
                 viewModel.setButton(false)
-                viewModel.onAddBudget()
+                if (uiState.dialogMode == BudgetDialogMode.ADD) {
+                    viewModel.onAddBudget()
+                } else {
+                    viewModel.onEditBudget()
+                }
+
             },
             onCancelClick = {
                 viewModel.onCancel()

@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.example.presentation.BudgetDialogMode
 import com.example.presentation.viewmodel.BudgetViewModel
 import otherColor
 import primaryColor
@@ -43,7 +44,10 @@ fun Fab(viewModel: BudgetViewModel) {
     ) {
         // Manual Entry
         FloatingActionButtonMenuItem(
-            onClick = { expanded = false; viewModel.setDialog(true) },
+            onClick = {
+                expanded = false
+                viewModel.setDialog(true)
+            },
             icon = {
                 Icon(
                     Icons.Filled.Edit,
