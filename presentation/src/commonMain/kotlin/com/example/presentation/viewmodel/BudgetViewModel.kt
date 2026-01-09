@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Budget
 import com.example.domain.usecase.Budget.CreateBudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
+import com.example.domain.usecase.Budget.DeleteBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
+import com.example.domain.usecase.Budget.UpdateBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.mapper.toUIModel
@@ -20,6 +22,8 @@ import kotlinx.coroutines.launch
 class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
     private val getBudgetUsecase: GetBudgetUsecase,
+    private val updateBudgetUsecase: UpdateBudgetUsecase,
+    private val deleteBudgetUsecase: DeleteBudgetUsecase,
     private val signOutUsecase: SignOutUsecase,
     private val authState: AuthState
 ) : ViewModel() {
@@ -110,8 +114,20 @@ class BudgetViewModel(
         }
     }
 
+    fun editBudget(budgetId: String) {
+
+    }
+
+    fun deleteBudget(budgetId: String) {
+        val userId = authState.user.value?.userId ?: return
+        viewModelScope.launch {
+            deleteBudgetUsecase(userId = userId, budgetId = budgetId)
+            getBudgets()
+        }
+    }
+
     fun onCancel() {
-        _budgetUIState.value = BudgetUIState()
+        _budgetUIState.value = _budgetUIState.value.copy(budgetName = "", budgetAmount = "")
     }
 
     fun signOut() {

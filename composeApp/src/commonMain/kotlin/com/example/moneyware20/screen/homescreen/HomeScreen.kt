@@ -76,8 +76,14 @@ fun HomeScreen(
                         indicatorColor = primaryColor
                     )
                 } else {
-                    if (budgetList.isNotEmpty()) BudgetList(budgetList)
-                    else Text(text = "No Result", style = MaterialTheme.typography.bodyLarge)
+                    if (budgetList.isNotEmpty()) BudgetList(budgetList, viewModel)
+                    else Text(
+                        text = "No Result",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.align(
+                            Alignment.Center
+                        )
+                    )
                 }
             }
         }

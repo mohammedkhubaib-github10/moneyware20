@@ -21,18 +21,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.moneyware20.component.OverflowMenu
 import com.example.moneyware20.component.budget_card.BudgetInfoBox
 import com.example.moneyware20.component.budget_card.BudgetProgress
 import com.example.presentation.ui_model.BudgetUIModel
+import com.example.presentation.viewmodel.BudgetViewModel
 
 @Composable
-fun BudgetList(budgetList: List<BudgetUIModel>) {
+fun BudgetList(
+    budgetList: List<BudgetUIModel>,
+    viewModel: BudgetViewModel
+) {
     LazyColumn(
         modifier = Modifier
     ) {
         items(budgetList) { budget ->
-            BudgetCard(budget = budget)
+            BudgetCard(budget = budget, viewModel)
         }
     }
 }
@@ -40,6 +43,7 @@ fun BudgetList(budgetList: List<BudgetUIModel>) {
 @Composable
 fun BudgetCard(
     budget: BudgetUIModel,
+    viewModel: BudgetViewModel,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -65,7 +69,9 @@ fun BudgetCard(
                     fontSize = 18.sp,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                OverflowMenu(onEdit = {}, onDelete = {})
+                OverflowMenu(
+                    onEdit = { viewModel.editBudget(budget.budgetId) },
+                    onDelete = { viewModel.deleteBudget(budget.budgetId) })
             }
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -84,12 +90,12 @@ fun BudgetCard(
             ) {
                 BudgetInfoBox(
                     title = "Budget",
-                    value = "₹ 2000",
+                    value = "₹ ${budget.budgetAmount}",
                     modifier = Modifier.weight(1f)
                 )
                 BudgetInfoBox(
                     title = "Expense",
-                    value = "₹ 200",
+                    value = "₹ 0",
                     modifier = Modifier.weight(1f)
                 )
                 BudgetInfoBox(
