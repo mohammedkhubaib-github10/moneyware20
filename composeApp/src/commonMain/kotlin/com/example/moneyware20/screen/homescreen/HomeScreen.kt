@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.MainHeader
 import com.example.presentation.BudgetDialogMode
+import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_model.UserUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import containerColor
@@ -34,7 +35,8 @@ import primaryColor
 @Composable
 fun HomeScreen(
     user: UserUIModel,
-    viewModel: BudgetViewModel
+    viewModel: BudgetViewModel,
+    onBudgetClick: (BudgetUIModel) -> Unit
 ) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val budgetList by viewModel.budgetList.collectAsState()
@@ -57,7 +59,7 @@ fun HomeScreen(
             },
             modifier = Modifier.fillMaxSize(),
             floatingActionButton = {
-                Fab(viewModel)
+                FabBudget(viewModel)
             }
         ) {
             Box(
@@ -72,7 +74,7 @@ fun HomeScreen(
                         indicatorColor = primaryColor
                     )
                 } else {
-                    if (budgetList.isNotEmpty()) BudgetList(budgetList, viewModel)
+                    if (budgetList.isNotEmpty()) BudgetList(budgetList, viewModel, onBudgetClick)
                     else Text(
                         text = "No Result",
                         style = MaterialTheme.typography.bodyLarge,

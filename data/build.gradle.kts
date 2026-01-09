@@ -64,6 +64,8 @@ kotlin {
                 implementation(libs.gitlive.firebase.firestore)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.datetime) // Use 0.6.0 or higher
+
 
                 implementation(project(":domain"))
                 implementation(project(":authentication"))

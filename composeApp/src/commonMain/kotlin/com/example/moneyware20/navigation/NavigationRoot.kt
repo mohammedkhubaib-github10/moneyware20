@@ -15,9 +15,11 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.moneyware20.screen.LoginScreen
 import com.example.moneyware20.screen.SplashScreen
+import com.example.moneyware20.screen.expensescreen.ExpensesScreen
 import com.example.moneyware20.screen.homescreen.HomeScreen
 import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
+import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.presentation.viewmodel.LoginViewModel
 import com.example.presentation.viewmodel.SplashViewModel
 import kotlinx.serialization.modules.SerializersModule
@@ -103,8 +105,20 @@ fun NavigationRoot(
                         }
                         HomeScreen(
                             viewModel = viewModel,
-                            user = key.user
+                            user = key.user,
+                            onBudgetClick = { budgetUIModel ->
+                                backStack.add(Route.Expenses(budgetUIModel))
+                            }
                         )
+                    }
+                }
+
+                is Route.Expenses -> {
+                    NavEntry(key) {
+                        val viewModel: ExpenseViewModel = koinViewModel()
+                        ExpensesScreen(key.budget, viewModel, {
+                            backStack.removeLast()
+                        })
                     }
                 }
 

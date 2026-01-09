@@ -1,4 +1,4 @@
-package com.example.moneyware20.screen.homescreen
+package com.example.moneyware20.screen.expensescreen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.material.icons.Icons
@@ -17,14 +17,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import com.example.presentation.BudgetDialogMode
-import com.example.presentation.viewmodel.BudgetViewModel
+import com.example.presentation.viewmodel.ExpenseViewModel
 import otherColor
 import primaryColor
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun Fab(viewModel: BudgetViewModel) {
+fun FabExpenses(viewModel: ExpenseViewModel) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     val animatedColor by animateColorAsState(
         targetValue = if (expanded) primaryColor else otherColor
@@ -46,7 +45,6 @@ fun Fab(viewModel: BudgetViewModel) {
         FloatingActionButtonMenuItem(
             onClick = {
                 expanded = false
-                viewModel.setDialog(true)
             },
             icon = {
                 Icon(

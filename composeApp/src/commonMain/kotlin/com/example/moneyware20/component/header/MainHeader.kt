@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import primaryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,8 +36,8 @@ fun MainHeader(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     MediumTopAppBar(
         colors = TopAppBarColors(
-            containerColor = Color(0xFF41817C),
-            scrolledContainerColor = Color(0xFF41817C),
+            containerColor = primaryColor,
+            scrolledContainerColor = primaryColor,
             navigationIconContentColor = Color.White,
             titleContentColor = Color.White,
             actionIconContentColor = Color.White,

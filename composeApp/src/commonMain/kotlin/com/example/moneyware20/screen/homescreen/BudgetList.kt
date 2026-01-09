@@ -1,6 +1,7 @@
 package com.example.moneyware20.screen.homescreen
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,13 +32,14 @@ import com.example.presentation.viewmodel.BudgetViewModel
 @Composable
 fun BudgetList(
     budgetList: List<BudgetUIModel>,
-    viewModel: BudgetViewModel
+    viewModel: BudgetViewModel,
+    onClick: (BudgetUIModel) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
     ) {
         items(budgetList) { budget ->
-            BudgetCard(budget = budget, viewModel)
+            BudgetCard(budget, viewModel, onClick)
         }
     }
 }
@@ -46,12 +48,13 @@ fun BudgetList(
 fun BudgetCard(
     budget: BudgetUIModel,
     viewModel: BudgetViewModel,
-    modifier: Modifier = Modifier
+    onClick: (BudgetUIModel) -> Unit
 ) {
     Card(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable(onClick = {onClick(budget)}),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, Color.LightGray),
         colors = CardDefaults.cardColors(

@@ -7,5 +7,6 @@ data class Expense(
     val expenseName: String,
     val date: LocalDate,
     val expenseAmount: Double,
-    val budgetId: String
+    val budgetId: String,
+    val userId: String
 )

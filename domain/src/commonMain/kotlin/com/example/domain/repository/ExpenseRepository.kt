@@ -4,11 +4,13 @@ import com.example.domain.entity.Expense
 
 interface ExpenseRepository {
 
-    suspend fun addExpense(expense: Expense)
+    suspend fun addExpense(expense: Expense): Expense
 
     suspend fun updateExpense(expense: Expense)
 
-    suspend fun getExpensesByBudget(budgetId: String): List<Expense>
+    suspend fun getExpensesByUser(userId: String): List<Expense>
+
+    suspend fun getExpensesByBudget(userId: String, budgetId: String): List<Expense>
 
     suspend fun deleteExpense(expenseId: String)
 }
