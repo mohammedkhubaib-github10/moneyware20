@@ -67,12 +67,11 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .padding(it)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
             ) {
                 if (uiState.isLoading) {
                     ContainedLoadingIndicator(
-                        modifier = Modifier.padding(24.dp),
+                        modifier = Modifier.padding(24.dp).align(Alignment.Center),
                         containerColor = containerColor,
                         indicatorColor = primaryColor
                     )
