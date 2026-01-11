@@ -45,7 +45,10 @@ fun ExpensesScreen(
                 }
             },
             onDateChange = { viewModel.onDateChange(it) },
-            onAddClick = {},
+            onAddClick = {
+                viewModel.onAddExpense(budgetUIModel.budgetId)
+                viewModel.setButton(false)
+            },
             onCancelClick = {
                 viewModel.setDialog(false)
                 viewModel.onCancel()

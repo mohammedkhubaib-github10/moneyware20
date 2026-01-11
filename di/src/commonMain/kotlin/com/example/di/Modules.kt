@@ -21,6 +21,10 @@ import com.example.domain.usecase.Budget.UpdateBudgetUsecase
 import com.example.domain.usecase.Budget.ValidateBudgetUsecase
 import com.example.domain.usecase.GetUserUsecase
 import com.example.domain.usecase.SignOutUsecase
+import com.example.domain.usecase.expense.CreateExpenseUsecase
+import com.example.domain.usecase.expense.DeleteExpenseUsecase
+import com.example.domain.usecase.expense.GetExpenseUsecase
+import com.example.domain.usecase.expense.UpdateExpenseUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
@@ -61,4 +65,8 @@ val domainModule = module {
     factoryOf(::SignOutUsecase)
     factoryOf(::DeleteBudgetUsecase)
     factoryOf(::UpdateBudgetUsecase)
+    factoryOf(::CreateExpenseUsecase)
+    factoryOf(::GetExpenseUsecase)
+    factoryOf(::UpdateExpenseUsecase)
+    factoryOf(::DeleteExpenseUsecase)
 }

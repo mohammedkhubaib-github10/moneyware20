@@ -1,13 +1,28 @@
 package com.example.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.Expense
+import com.example.domain.usecase.expense.CreateExpenseUsecase
+import com.example.domain.usecase.expense.DeleteExpenseUsecase
+import com.example.domain.usecase.expense.GetExpenseUsecase
+import com.example.domain.usecase.expense.UpdateExpenseUsecase
+import com.example.presentation.AuthState
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_state.ExpenseUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
-class ExpenseViewModel : ViewModel() {
+class ExpenseViewModel(
+    private val createExpenseUsecase: CreateExpenseUsecase,
+    private val getExpenseUsecase: GetExpenseUsecase,
+    private val updateExpenseUsecase: UpdateExpenseUsecase,
+    private val deleteExpenseUsecase: DeleteExpenseUsecase,
+    private val authState: AuthState
+
+) : ViewModel() {
     private val _expenseUIState = MutableStateFlow(ExpenseUIState())
     val expenseUIState = _expenseUIState.asStateFlow()
 
@@ -55,6 +70,32 @@ class ExpenseViewModel : ViewModel() {
 
     fun onCancel() {
         _expenseUIState.value = _expenseUIState.value.copy(expenseName = "", expenseAmount = "")
+    }
+
+    fun onAddExpense(budgetId: String) {
+        val userId = authState.user.value?.userId ?: return
+
+        viewModelScope.launch {
+
+            val uiState = _expenseUIState.value
+            val expense = Expense(
+                expenseId = uiState.expenseId,
+                expenseName = uiState.expenseName,
+                expenseAmount = uiState.expenseAmount.toDouble(),
+                date = uiState.date,
+                userId = userId,
+                budgetId = budgetId
+            )
+            createExpenseUsecase(expense)
+            _expenseUIState.value = ExpenseUIState()
+            setDialog(false)
+            setButton(true)
+            getExpensesByBudget()
+        }
+    }
+
+    fun getExpensesByBudget() {
+
     }
 
 }
