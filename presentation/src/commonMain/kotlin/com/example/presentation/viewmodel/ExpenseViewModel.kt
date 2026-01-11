@@ -9,6 +9,8 @@ import com.example.domain.usecase.expense.GetExpenseUsecase
 import com.example.domain.usecase.expense.UpdateExpenseUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.DialogMode
+import com.example.presentation.mapper.toUIModel
+import com.example.presentation.ui_model.ExpenseUIModel
 import com.example.presentation.ui_state.ExpenseUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +27,8 @@ class ExpenseViewModel(
 ) : ViewModel() {
     private val _expenseUIState = MutableStateFlow(ExpenseUIState())
     val expenseUIState = _expenseUIState.asStateFlow()
-
+    private val _expenseList = MutableStateFlow<List<ExpenseUIModel>>(emptyList())
+    val expenseList = _expenseList.asStateFlow()
     fun setButton(boolean: Boolean) {
         _expenseUIState.value = _expenseUIState.value.copy(buttonState = boolean)
     }
@@ -90,12 +93,30 @@ class ExpenseViewModel(
             _expenseUIState.value = ExpenseUIState()
             setDialog(false)
             setButton(true)
-            getExpensesByBudget()
+            getExpensesByBudget(budgetId)
         }
     }
 
-    fun getExpensesByBudget() {
+    fun getExpensesByBudget(budgetId: String) {
+        val userId = authState.user.value?.userId ?: return
+        viewModelScope.launch {
+            val list = getExpenseUsecase(userId, budgetId)
+            _expenseList.value = list.map {
+                it.toUIModel()
+            }
+            _expenseUIState.value = _expenseUIState.value.copy(isLoading = false)
+        }
+    }
 
+    fun getExpenseByUser() {
+        val userId = authState.user.value?.userId ?: return
+        viewModelScope.launch {
+            val list = getExpenseUsecase(userId)
+            _expenseList.value = list.map {
+                it.toUIModel()
+            }
+            _expenseUIState.value = _expenseUIState.value.copy(isLoading = false)
+        }
     }
 
 }

@@ -11,7 +11,7 @@ data class ExpenseUIState(
     val expenseAmount: String = "",
     val dialogState: Boolean = false,
     val dialogMode: DialogMode = DialogMode.ADD,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val buttonState: Boolean = true,
     val datePickerState: Boolean = false
 )
