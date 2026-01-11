@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.MainHeader
-import com.example.presentation.BudgetDialogMode
+import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_model.UserUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
@@ -102,7 +102,7 @@ fun HomeScreen(
             },
             onConfirmClick = {
                 viewModel.setButton(false)
-                if (uiState.dialogMode == BudgetDialogMode.ADD) {
+                if (uiState.dialogMode == DialogMode.ADD) {
                     viewModel.onAddBudget()
                 } else {
                     viewModel.onEditBudget()

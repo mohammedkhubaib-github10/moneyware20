@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moneyware20.component.budget_card.BudgetInfoBox
 import com.example.moneyware20.component.budget_card.BudgetProgress
-import com.example.presentation.BudgetDialogMode
+import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 
@@ -77,7 +77,7 @@ fun BudgetCard(
                 OverflowMenu(
                     onEdit = {
                         viewModel.setDialog(true)
-                        viewModel.setBudgetDialogMode(BudgetDialogMode.EDIT)
+                        viewModel.setBudgetDialogMode(DialogMode.EDIT)
                         viewModel.onBudgetIdChange(budgetId = budget.budgetId)
                         viewModel.onBudgetNameChange(budget.budgetName)
                         viewModel.onBudgetAmountChange(budget.budgetAmount)

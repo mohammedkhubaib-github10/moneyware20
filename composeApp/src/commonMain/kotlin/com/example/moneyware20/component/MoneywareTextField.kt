@@ -53,7 +53,7 @@ fun MoneywareTextField(
             unfocusedContainerColor = containerColor,
             focusedBorderColor = primaryColor,
             unfocusedBorderColor = primaryColor,
-            disabledBorderColor = Color.Transparent,
+            disabledBorderColor = primaryColor,
             cursorColor = primaryColor
         ),
         shape = RoundedCornerShape(12.dp)

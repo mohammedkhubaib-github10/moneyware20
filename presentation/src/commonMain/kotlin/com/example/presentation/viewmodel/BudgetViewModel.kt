@@ -10,7 +10,7 @@ import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.UpdateBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.presentation.AuthState
-import com.example.presentation.BudgetDialogMode
+import com.example.presentation.DialogMode
 import com.example.presentation.mapper.toUIModel
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
@@ -44,7 +44,7 @@ class BudgetViewModel(
         _budgetUIState.value = _budgetUIState.value.copy(dialogState = boolean)
     }
 
-    fun setBudgetDialogMode(mode: BudgetDialogMode) {
+    fun setBudgetDialogMode(mode: DialogMode) {
         _budgetUIState.value = _budgetUIState.value.copy(dialogMode = mode)
     }
 

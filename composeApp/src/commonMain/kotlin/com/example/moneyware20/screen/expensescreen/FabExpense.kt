@@ -45,6 +45,7 @@ fun FabExpenses(viewModel: ExpenseViewModel) {
         FloatingActionButtonMenuItem(
             onClick = {
                 expanded = false
+                viewModel.setDialog(true)
             },
             icon = {
                 Icon(

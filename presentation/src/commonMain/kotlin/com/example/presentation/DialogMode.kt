@@ -1,5 +1,5 @@
 package com.example.presentation
 
-enum class BudgetDialogMode {
+enum class DialogMode {
     ADD, EDIT
 }

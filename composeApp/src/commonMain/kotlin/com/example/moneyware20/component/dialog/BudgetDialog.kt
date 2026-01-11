@@ -21,12 +21,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.moneyware20.component.MoneywareTextField
-import com.example.presentation.BudgetDialogMode
+import com.example.presentation.DialogMode
 
 
 @Composable
 fun BudgetDialog(
-    mode: BudgetDialogMode,
+    mode: DialogMode,
     budgetName: String,
     budgetAmount: String,
     onBudgetNameChange: (String) -> Unit,
@@ -37,13 +37,13 @@ fun BudgetDialog(
     enabled: Boolean
 ) {
 
-    val titleText = if (mode == BudgetDialogMode.ADD) {
+    val titleText = if (mode == DialogMode.ADD) {
         "Add a Budget"
     } else {
         "Edit Budget"
     }
 
-    val confirmButtonText = if (mode == BudgetDialogMode.ADD) {
+    val confirmButtonText = if (mode == DialogMode.ADD) {
         "Add"
     } else {
         "Update"
