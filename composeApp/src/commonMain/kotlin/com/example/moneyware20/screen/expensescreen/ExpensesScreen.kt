@@ -10,7 +10,6 @@ import com.example.moneyware20.component.header.Header
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.ui.component.ExpenseDialog
-import kotlinx.datetime.LocalDate
 
 @Composable
 fun ExpensesScreen(
@@ -35,10 +34,10 @@ fun ExpensesScreen(
             mode = uiState.dialogMode,
             expenseName = uiState.expenseName,
             expenseAmount = uiState.expenseAmount,
-            selectedDate = LocalDate.fromEpochDays(1),
+            selectedDate = uiState.date,
             onExpenseNameChange = { viewModel.onExpenseNameChange(it) },
             onExpenseAmountChange = { viewModel.onExpenseAmountChange(it) },
-            onDateChange = {},
+            onDateChange = { viewModel.onDateChange(it) },
             onAddClick = {},
             onCancelClick = {
                 viewModel.setDialog(false)

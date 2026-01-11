@@ -5,6 +5,7 @@ import com.example.presentation.DialogMode
 import com.example.presentation.ui_state.ExpenseUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.datetime.LocalDate
 
 class ExpenseViewModel : ViewModel() {
     private val _expenseUIState = MutableStateFlow(ExpenseUIState())
@@ -43,6 +44,12 @@ class ExpenseViewModel : ViewModel() {
 
         _expenseUIState.value = _expenseUIState.value.copy(
             expenseAmount = amount
+        )
+    }
+
+    fun onDateChange(date: LocalDate) {
+        _expenseUIState.value = _expenseUIState.value.copy(
+            date = date
         )
     }
 

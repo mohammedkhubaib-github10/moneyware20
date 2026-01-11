@@ -19,18 +19,15 @@ import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,12 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.moneyware20.component.MoneywareTextField
 import com.example.presentation.DialogMode
-import kotlinx.coroutines.launch
+import containerColor
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
+import kotlinx.datetime.toLocalDateTime
 import primaryColor
+import kotlin.time.Clock
 
 @OptIn(FormatStringsInDatetimeFormats::class)
 @Composable
@@ -124,7 +123,7 @@ fun ExpenseDialog(
 
                 /* ---------- DATE PICKER ---------- */
                 MoneywareTextField(
-                    text = selectedDate.toString(),
+                    text = selectedDate.toDisplayText(),
                     onValueChange = onExpenseAmountChange,
                     hint = "Select a Date",
                     modifier = Modifier.fillMaxWidth(),
@@ -177,53 +176,91 @@ fun ExpenseDialog(
             }
         }
         if (datePickerState) {
-            MoneywareDatePicker(datePickerState, setDatePicker)
+            MoneywareDatePicker(
+                setDatePicker = setDatePicker,
+                onDateSelected = onDateChange
+            )
         }
     }
 }
 
 @Composable
-fun MoneywareDatePicker(datePicker: Boolean, setDatePicker: (Boolean) -> Unit) {
-    val snackState = remember { SnackbarHostState() }
-    val snackScope = rememberCoroutineScope()
-    SnackbarHost(hostState = snackState, Modifier)
-    val datePickerState = rememberDatePickerState()
-    val confirmEnabled = remember {
-        derivedStateOf { datePickerState.selectedDateMillis != null }
+fun MoneywareDatePicker(
+    setDatePicker: (Boolean) -> Unit,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    val todayMillis = remember {
+        Clock.System.now()
+            .toEpochMilliseconds()
     }
+
+    val datePickerState = rememberDatePickerState(
+        selectableDates = object : androidx.compose.material3.SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis <= todayMillis
+            }
+        }
+    )
+
     DatePickerDialog(
-        onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onDismissRequest.
-            setDatePicker(false)
-        },
+        colors = DatePickerDefaults.colors(containerColor = containerColor),
+        onDismissRequest = { setDatePicker(false) },
         confirmButton = {
             TextButton(
                 onClick = {
-                    setDatePicker(false)
-                    snackScope.launch {
-                        snackState.showSnackbar(
-                            "Selected date timestamp: ${datePickerState.selectedDateMillis}"
-                        )
+                    datePickerState.selectedDateMillis?.let { millis ->
+                        val date = kotlinx.datetime.Instant
+                            .fromEpochMilliseconds(millis)
+                            .toLocalDateTime(
+                                kotlinx.datetime.TimeZone.currentSystemDefault()
+                            )
+                            .date
+
+                        onDateSelected(date)
                     }
+                    setDatePicker(false)
                 },
-                enabled = confirmEnabled.value,
+                enabled = datePickerState.selectedDateMillis != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = primaryColor,
+                    contentColor = Color.White
+                )
+
             ) {
                 Text("OK")
             }
         },
         dismissButton = {
-            TextButton(onClick = { setDatePicker(false) }) { Text("Cancel") }
-        },
+            TextButton(
+                onClick = { setDatePicker(false) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = primaryColor,
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Cancel")
+            }
+        }
     ) {
-        // The verticalScroll will allow scrolling to show the entire month in case there is not
-        // enough horizontal space (for example, when in landscape mode).
-        // Note that it's still currently recommended to use a DisplayMode.Input at the state in
-        // those cases.
         DatePicker(
             state = datePickerState,
             modifier = Modifier.verticalScroll(rememberScrollState()),
+            colors = DatePickerDefaults.colors(
+                selectedYearContainerColor = primaryColor,
+                selectedDayContainerColor = primaryColor,
+                currentYearContentColor = primaryColor,
+                todayDateBorderColor = primaryColor,
+                containerColor = containerColor,
+                todayContentColor = primaryColor
+            )
         )
     }
+}
+
+@OptIn(FormatStringsInDatetimeFormats::class)
+fun LocalDate.toDisplayText(): String {
+    val formatter = LocalDate.Format {
+        byUnicodePattern("dd-MM-yyyy")
+    }
+    return formatter.format(this)
 }
