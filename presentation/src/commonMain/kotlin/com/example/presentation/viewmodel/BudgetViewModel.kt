@@ -3,7 +3,7 @@ package com.example.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Budget
-import com.example.domain.usecase.Budget.CreateBudgetResult
+import com.example.domain.usecase.Budget.BudgetResult
 import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.DeleteBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
@@ -91,14 +91,14 @@ class BudgetViewModel(
 
             when (val result = createBudgetUsecase(userId, budget)) {
 
-                is CreateBudgetResult.Success -> {
+                is BudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
                     setDialog(false)
                     setButton(true)
                     getBudgets()
                 }
 
-                is CreateBudgetResult.Error -> {
+                is BudgetResult.Error -> {
                     val message = result.error.toUiMessage()
                     onError(message)
                     setButton(true)
@@ -129,9 +129,21 @@ class BudgetViewModel(
                 budgetName = uiState.budgetName,
                 budgetAmount = uiState.budgetAmount.toDouble()
             )
-            updateBudgetUsecase(userId, budget)
-            _budgetUIState.value = BudgetUIState()
-            getBudgets()
+            when (val result = updateBudgetUsecase(userId, budget)) {
+
+                is BudgetResult.Success -> {
+                    _budgetUIState.value = BudgetUIState()
+                    setDialog(false)
+                    setButton(true)
+                    getBudgets()
+                }
+
+                is BudgetResult.Error -> {
+                    val message = result.error.toUiMessage()
+                    onError(message)
+                    setButton(true)
+                }
+            }
         }
     }
 

@@ -36,7 +36,14 @@ fun ExpensesScreen(
             expenseAmount = uiState.expenseAmount,
             selectedDate = uiState.date,
             onExpenseNameChange = { viewModel.onExpenseNameChange(it) },
-            onExpenseAmountChange = { viewModel.onExpenseAmountChange(it) },
+            onExpenseAmountChange = {
+                val filtered = it
+                    .filter { it.isDigit() || it == '.' }
+
+                if (filtered.count { it == '.' } <= 1) {
+                    viewModel.onExpenseAmountChange(filtered)
+                }
+            },
             onDateChange = { viewModel.onDateChange(it) },
             onAddClick = {},
             onCancelClick = {

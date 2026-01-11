@@ -29,3 +29,8 @@ sealed interface BudgetValidationResult {
         data object DuplicateName : Error
     }
 }
+
+sealed interface BudgetResult {
+    data class Success(val budget: Budget) : BudgetResult
+    data class Error(val error: BudgetValidationResult.Error) : BudgetResult
+}
