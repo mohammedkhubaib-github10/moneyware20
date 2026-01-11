@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.moneyware20.component.OverflowMenu
 import com.example.moneyware20.component.budget_card.BudgetInfoBox
 import com.example.moneyware20.component.budget_card.BudgetProgress
 import com.example.presentation.DialogMode
@@ -54,7 +55,7 @@ fun BudgetCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable(onClick = {onClick(budget)}),
+            .clickable(onClick = { onClick(budget) }),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, Color.LightGray),
         colors = CardDefaults.cardColors(

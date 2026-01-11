@@ -25,10 +25,26 @@ class ExpenseViewModel(
     private val authState: AuthState
 
 ) : ViewModel() {
+
     private val _expenseUIState = MutableStateFlow(ExpenseUIState())
     val expenseUIState = _expenseUIState.asStateFlow()
     private val _expenseList = MutableStateFlow<List<ExpenseUIModel>>(emptyList())
     val expenseList = _expenseList.asStateFlow()
+
+    init {
+        observeAuth()
+    }
+
+    private fun observeAuth() {
+        viewModelScope.launch {
+            authState.user.collect { user ->
+                if (user == null) {
+                    clearState()
+                }
+            }
+        }
+    }
+
     fun setButton(boolean: Boolean) {
         _expenseUIState.value = _expenseUIState.value.copy(buttonState = boolean)
     }
@@ -119,4 +135,36 @@ class ExpenseViewModel(
         }
     }
 
+    fun onEditExpense(budgetId: String) {
+        val userId = authState.user.value?.userId ?: return
+        viewModelScope.launch {
+            val uiState = _expenseUIState.value
+
+            val expense = Expense(
+                expenseId = uiState.expenseId,
+                expenseName = uiState.expenseName,
+                expenseAmount = uiState.expenseAmount.toDouble(),
+                date = uiState.date,
+                budgetId = budgetId,
+                userId = userId
+            )
+            updateExpenseUsecase(expense)
+            _expenseUIState.value = ExpenseUIState()
+            setDialog(false)
+            setButton(true)
+            getExpensesByBudget(budgetId)
+        }
+    }
+
+    fun onDeleteExpense(budgetId: String, expenseId: String) {
+        viewModelScope.launch {
+            deleteExpenseUsecase(expenseId)
+            getExpensesByBudget(budgetId = budgetId)
+        }
+    }
+
+    private fun clearState() {
+        _expenseList.value = emptyList()
+        _expenseUIState.value = ExpenseUIState()
+    }
 }

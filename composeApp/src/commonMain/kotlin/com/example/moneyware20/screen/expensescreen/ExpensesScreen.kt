@@ -11,10 +11,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.Header
+import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.ui.component.ExpenseDialog
@@ -28,11 +32,19 @@ fun ExpensesScreen(
     viewModel: ExpenseViewModel,
     onNavigation: () -> Unit
 ) {
+    var navigationConsumed by remember { mutableStateOf(false) }
+
     val uiState by viewModel.expenseUIState.collectAsState()
     val expenseList by viewModel.expenseList.collectAsState()
     Scaffold(
         topBar = {
-            Header(text = budgetUIModel.budgetName, onNavigationClick = onNavigation)
+            Header(text = budgetUIModel.budgetName, onNavigationClick = {
+                if (!navigationConsumed) {
+                    navigationConsumed = true
+                    onNavigation()
+                }
+            }
+            )
         },
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
@@ -51,7 +63,11 @@ fun ExpensesScreen(
                     indicatorColor = primaryColor
                 )
             } else {
-                if (expenseList.isNotEmpty()) ExpenseList(expenseList, viewModel)
+                if (expenseList.isNotEmpty()) ExpenseList(
+                    expenseList,
+                    viewModel,
+                    budgetUIModel.budgetId
+                )
                 else Text(
                     text = "No Result",
                     style = MaterialTheme.typography.bodyLarge,
@@ -79,8 +95,13 @@ fun ExpensesScreen(
             },
             onDateChange = { viewModel.onDateChange(it) },
             onAddClick = {
-                viewModel.onAddExpense(budgetUIModel.budgetId)
                 viewModel.setButton(false)
+
+                if (uiState.dialogMode == DialogMode.ADD) {
+                    viewModel.onAddExpense(budgetUIModel.budgetId)
+                } else {
+                    viewModel.onEditExpense(budgetUIModel.budgetId)
+                }
             },
             onCancelClick = {
                 viewModel.setDialog(false)

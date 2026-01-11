@@ -34,6 +34,19 @@ class BudgetViewModel(
     private val _budgetList = MutableStateFlow<List<BudgetUIModel>>(emptyList())
     val budgetList = _budgetList.asStateFlow()
 
+    init {
+        observeAuth()
+    }
+
+    private fun observeAuth() {
+        viewModelScope.launch {
+            authState.user.collect { user ->
+                if (user == null) {
+                    clearState()
+                }
+            }
+        }
+    }
 
     /* ---------------- UI Events ---------------- */
     fun setButton(boolean: Boolean) {
@@ -160,9 +173,14 @@ class BudgetViewModel(
         _budgetUIState.value = _budgetUIState.value.copy(budgetName = "", budgetAmount = "")
     }
 
+    fun clearState() {
+        _budgetList.value = emptyList()
+        _budgetUIState.value = BudgetUIState()
+
+    }
+
     fun signOut() {
         authState.onLogout()
-        _budgetUIState.value = BudgetUIState()
         signOutUsecase()
     }
 }

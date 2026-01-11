@@ -1,4 +1,4 @@
-package com.example.moneyware20.screen.homescreen
+package com.example.moneyware20.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size

@@ -116,11 +116,12 @@ fun NavigationRoot(
                 is Route.Expenses -> {
                     NavEntry(key) {
                         val viewModel: ExpenseViewModel = koinViewModel()
-                        LaunchedEffect(Unit) {
+                        val list by viewModel.expenseList.collectAsState()
+                        LaunchedEffect(list) {
                             viewModel.getExpensesByBudget(key.budget.budgetId)
                         }
                         ExpensesScreen(key.budget, viewModel, {
-                            backStack.removeLast()
+                            backStack.removeLastOrNull()
                         })
                     }
                 }

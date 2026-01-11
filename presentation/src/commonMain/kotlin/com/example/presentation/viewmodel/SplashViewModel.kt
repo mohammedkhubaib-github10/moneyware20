@@ -19,7 +19,7 @@ class SplashViewModel(
     private fun getUser() {
         viewModelScope.launch {
             val user = getUserUsecase()?.toUIModel()
-            authState.putUser(user)
+            authState.onLogin(user)
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.example.moneyware20.screen.expensescreen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,11 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,26 +22,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.AutoSizeText
+import com.example.moneyware20.component.OverflowMenu
+import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.ExpenseUIModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.ui.component.toDisplayText
 import kotlin.math.roundToInt
 
 @Composable
-fun ExpenseList(expenseList: List<ExpenseUIModel>, viewModel: ExpenseViewModel) {
+fun ExpenseList(expenseList: List<ExpenseUIModel>, viewModel: ExpenseViewModel, budgetId: String) {
     LazyColumn(
         modifier = Modifier
     ) {
         items(expenseList) { expense ->
-            ExpenseCard(expense, viewModel)
+            ExpenseCard(expense, viewModel, budgetId)
         }
     }
 }
 
 @Composable
 fun ExpenseCard(
-    expenseUIModel: ExpenseUIModel,
-    viewModel: ExpenseViewModel
+    expense: ExpenseUIModel,
+    viewModel: ExpenseViewModel,
+    budgetId: String
 ) {
     val amountColor = Color(0xFFE53935) // soft red
     Card(
@@ -71,7 +69,7 @@ fun ExpenseCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = expenseUIModel.expenseName,
+                    text = expense.expenseName,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.Black,
@@ -82,7 +80,7 @@ fun ExpenseCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = expenseUIModel.date.toDisplayText(),
+                    text = expense.date.toDisplayText(),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -90,15 +88,21 @@ fun ExpenseCard(
 
             /* -------- RIGHT: Amount -------- */
             AutoSizeText(
-                text = "₹ ${expenseUIModel.expenseAmount.toDouble().roundToInt()}",
+                text = "₹ ${expense.expenseAmount.toDouble().roundToInt()}",
                 textColor = amountColor,
                 fontWeight = FontWeight.Bold
 
             )
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "menu",
-                modifier = Modifier.clickable {})
+            OverflowMenu(
+                onEdit = {
+                    viewModel.setDialog(true)
+                    viewModel.setExpenseDialogMode(DialogMode.EDIT)
+                    viewModel.onExpenseIdChange(expense.expenseId)
+                    viewModel.onExpenseNameChange(expense.expenseName)
+                    viewModel.onExpenseAmountChange(expense.expenseAmount)
+                    viewModel.onDateChange(expense.date)
+                },
+                onDelete = { viewModel.onDeleteExpense(budgetId, expense.expenseId) })
         }
     }
 }
