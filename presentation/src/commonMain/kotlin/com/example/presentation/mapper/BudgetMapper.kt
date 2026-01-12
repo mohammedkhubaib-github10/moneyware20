@@ -2,6 +2,7 @@ package com.example.presentation.mapper
 
 import com.example.domain.entity.Budget
 import com.example.domain.entity.Expense
+import com.example.domain.usecase_model.BudgetSummary
 import com.example.presentation.ui_model.BudgetUIModel
 
 fun Budget.toUIModel(): BudgetUIModel = BudgetUIModel(
@@ -9,16 +10,8 @@ fun Budget.toUIModel(): BudgetUIModel = BudgetUIModel(
     budgetName = budgetName,
     budgetAmount = budgetAmount.toString()
 )
-fun Budget.toBudgetCard(
-    expenses: List<Expense>
+fun BudgetSummary.toBudgetCard(
 ): BudgetUIModel {
-
-    val totalExpense = expenses.sumOf { it.expenseAmount }
-    val balance = budgetAmount - totalExpense
-    val percentageUsed =
-        if (budgetAmount > 0)
-            (totalExpense / budgetAmount) * 100
-        else 0.0
 
     return BudgetUIModel(
         budgetId = budgetId,

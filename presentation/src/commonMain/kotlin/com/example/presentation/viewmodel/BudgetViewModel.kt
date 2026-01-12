@@ -8,6 +8,7 @@ import com.example.domain.usecase.Budget.CreateBudgetUsecase
 import com.example.domain.usecase.Budget.DeleteBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.UpdateBudgetUsecase
+import com.example.domain.usecase.GetBudgetSummaryUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.expense.GetExpenseUsecase
 import com.example.presentation.AuthState
@@ -27,6 +28,7 @@ class BudgetViewModel(
     private val deleteBudgetUsecase: DeleteBudgetUsecase,
     private val signOutUsecase: SignOutUsecase,
     private val getExpenseUsecase: GetExpenseUsecase,
+    private val getBudgetSummaryUsecase: GetBudgetSummaryUsecase,
     private val authState: AuthState
 ) : ViewModel() {
 
@@ -127,13 +129,9 @@ class BudgetViewModel(
 
             val budgets = getBudgetUsecase(userId)
             val expenses = getExpenseUsecase(userId) // ALL expenses
-
-            val budgetCards = budgets.map { budget ->
-                val budgetExpenses = expenses.filter {
-                    it.budgetId == budget.budgetId
-                }
-
-                budget.toBudgetCard(budgetExpenses)
+            val budgetSummaries = getBudgetSummaryUsecase(budgets, expenses)
+            val budgetCards = budgetSummaries.map { budget ->
+                budget.toBudgetCard()
             }
 
             _budgetList.value = budgetCards
