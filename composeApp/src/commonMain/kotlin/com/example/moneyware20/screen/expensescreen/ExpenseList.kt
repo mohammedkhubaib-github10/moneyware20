@@ -62,7 +62,7 @@ fun ExpenseList(
                     modifier = Modifier
                 ) {
                     items(expenseList) { expense ->
-                        ExpenseCard(expense, expenseViewModel, budgetId)
+                        ExpenseCard(expense, expenseViewModel, budgetViewModel, budgetId)
                     }
                 }
             } else Text(
@@ -80,6 +80,7 @@ fun ExpenseList(
 fun ExpenseCard(
     expense: ExpenseUIModel,
     expenseViewModel: ExpenseViewModel,
+    budgetViewModel: BudgetViewModel,
     budgetId: String
 ) {
     val amountColor = Color(0xFFE53935) // soft red
@@ -138,7 +139,13 @@ fun ExpenseCard(
                     expenseViewModel.onExpenseAmountChange(expense.expenseAmount)
                     expenseViewModel.onDateChange(expense.date)
                 },
-                onDelete = { expenseViewModel.onDeleteExpense(budgetId, expense.expenseId) })
+                onDelete = {
+                    expenseViewModel.onDeleteExpense(
+                        budgetId,
+                        expense.expenseId
+                    )
+                    budgetViewModel.refreshBudgets()
+                })
         }
     }
 }

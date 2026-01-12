@@ -110,7 +110,7 @@ class BudgetViewModel(
 
                 is BudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
-                    getBudgets()
+                    refreshBudgets()
                 }
 
                 is BudgetResult.Error -> {
@@ -126,14 +126,12 @@ class BudgetViewModel(
     fun getBudgets() {
         val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
-
             val budgets = getBudgetUsecase(userId)
             val expenses = getExpenseUsecase(userId) // ALL expenses
             val budgetSummaries = getBudgetSummaryUsecase(budgets, expenses)
             val budgetCards = budgetSummaries.map { budget ->
                 budget.toBudgetCard()
             }
-
             _budgetList.value = budgetCards
             _budgetUIState.value = _budgetUIState.value.copy(isLoading = false)
 
@@ -155,7 +153,7 @@ class BudgetViewModel(
 
                 is BudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
-                    getBudgets()
+                    refreshBudgets()
                 }
 
                 is BudgetResult.Error -> {
@@ -171,7 +169,7 @@ class BudgetViewModel(
         val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
             deleteBudgetUsecase(userId = userId, budgetId = budgetId)
-            getBudgets()
+            refreshBudgets()
 
         }
     }
@@ -190,5 +188,9 @@ class BudgetViewModel(
         authState.onLogout()
         signOutUsecase()
     }
+    fun refreshBudgets() {
+        getBudgets()
+    }
+
 }
 

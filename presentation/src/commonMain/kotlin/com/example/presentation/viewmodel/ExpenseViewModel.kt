@@ -25,7 +25,6 @@ class ExpenseViewModel(
     private val authState: AuthState
 
 ) : ViewModel() {
-
     private val _expenseUIState = MutableStateFlow(ExpenseUIState())
     val expenseUIState = _expenseUIState.asStateFlow()
     private val _expenseList = MutableStateFlow<List<ExpenseUIModel>>(emptyList())
@@ -107,15 +106,12 @@ class ExpenseViewModel(
             )
             createExpenseUsecase(expense)
             _expenseUIState.value = ExpenseUIState()
-            setDialog(false)
-            setButton(true)
             getExpensesByBudget(budgetId)
         }
     }
 
     fun getExpensesByBudget(budgetId: String) {
         val userId = authState.user.value?.userId ?: return
-
         viewModelScope.launch {
             val list = getExpenseUsecase(userId, budgetId)
             _expenseList.value = list.map {
@@ -140,8 +136,6 @@ class ExpenseViewModel(
             )
             updateExpenseUsecase(expense)
             _expenseUIState.value = ExpenseUIState()
-            setDialog(false)
-            setButton(true)
             getExpensesByBudget(budgetId)
         }
     }

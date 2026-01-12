@@ -10,17 +10,17 @@ class GetBudgetSummaryUsecase {
             val budgetExpenses = expenses.filter {
                 it.budgetId == budget.budgetId
             }
-            budget.calculate(budget, budgetExpenses)
+            budget.calculate(budgetExpenses)
         }
         return budgetSummary
     }
 
-    fun Budget.calculate(budget: Budget, expenses: List<Expense>): BudgetSummary {
+    fun Budget.calculate(expenses: List<Expense>): BudgetSummary {
         val totalExpense = expenses.sumOf { it.expenseAmount }
-        val balance = budget.budgetAmount - totalExpense
+        val balance = budgetAmount - totalExpense
         val percentageUsed =
-            if (budget.budgetAmount > 0)
-                (totalExpense / budget.budgetAmount) * 100
+            if (budgetAmount > 0)
+                (totalExpense / budgetAmount) * 100
             else 0.0
         return BudgetSummary(
             budgetId = budgetId,

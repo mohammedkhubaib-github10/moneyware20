@@ -99,7 +99,7 @@ fun NavigationRoot(
                                 backStack.clear()
                                 backStack.add(Route.Login)
                             } else {
-                                viewModel.getBudgets()
+                                viewModel.refreshBudgets()
                             }
                         }
                         HomeScreen(

@@ -96,6 +96,7 @@ fun ExpensesScreen(
                 } else {
                     expenseViewModel.onEditExpense(budgetUIModel.budgetId)
                 }
+                budgetViewModel.refreshBudgets()
             },
             onCancelClick = {
                 expenseViewModel.setDialog(false)
