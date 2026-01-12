@@ -6,5 +6,8 @@ import kotlinx.serialization.Serializable
 data class BudgetUIModel(
     val budgetId: String,
     val budgetName: String,
-    val budgetAmount: String
+    val budgetAmount: String,
+    val totalExpense: String = "0",
+    val balance: String = "0",
+    val percentageUsed: String = "0"
 )

@@ -106,8 +106,6 @@ class BudgetViewModel(
 
                 is BudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
-                    setDialog(false)
-                    setButton(true)
                     getBudgets()
                 }
 
@@ -146,8 +144,6 @@ class BudgetViewModel(
 
                 is BudgetResult.Success -> {
                     _budgetUIState.value = BudgetUIState()
-                    setDialog(false)
-                    setButton(true)
                     getBudgets()
                 }
 

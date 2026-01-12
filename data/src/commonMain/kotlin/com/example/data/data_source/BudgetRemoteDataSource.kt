@@ -12,7 +12,7 @@ interface BudgetRemoteDataSource {
 
     suspend fun getBudgets(userId: String): List<Pair<String, BudgetDto>>  //return list of (id, dto)
 
-    suspend fun isBudgetNameExists(userId: String, name: String): Boolean
+    suspend fun isBudgetNameExists(userId: String, name: String): Pair<Boolean, String?>
 
     /* UPDATE */
     suspend fun updateBudget(

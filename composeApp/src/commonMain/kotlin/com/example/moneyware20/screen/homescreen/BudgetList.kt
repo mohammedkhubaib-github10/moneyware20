@@ -29,6 +29,7 @@ import com.example.moneyware20.component.budget_card.BudgetProgress
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun BudgetList(
@@ -89,7 +90,7 @@ fun BudgetCard(
 
             // Progress
             BudgetProgress(
-                spentPercent = 20f,
+                spentPercent = budget.percentageUsed.toFloat()/100,
                 modifier = Modifier.align(Alignment.CenterHorizontally).offset(y = -20.dp)
             )
 
@@ -106,12 +107,12 @@ fun BudgetCard(
                 )
                 BudgetInfoBox(
                     title = "Expense",
-                    value = "₹ 0",
+                    value = "₹ ${budget.totalExpense.toDouble().roundToInt()}",
                     modifier = Modifier.weight(1f)
                 )
                 BudgetInfoBox(
                     title = "Balance",
-                    value = "₹ 0",
+                    value = "₹ ${budget.balance.toDouble().roundToInt()}",
                     modifier = Modifier.weight(1f)
                 )
             }

@@ -31,7 +31,7 @@ class BudgetRepositoryImpl(private val budgetRemoteDataSource: BudgetRemoteDataS
         return newList
     }
 
-    override suspend fun isBudgetNameExists(userId: String, name: String): Boolean {
+    override suspend fun isBudgetNameExists(userId: String, name: String): Pair<Boolean, String?> {
         return budgetRemoteDataSource.isBudgetNameExists(userId, name)
     }
 

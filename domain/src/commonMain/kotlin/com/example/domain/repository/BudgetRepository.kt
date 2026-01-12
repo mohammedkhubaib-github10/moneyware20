@@ -12,7 +12,7 @@ interface BudgetRepository {
 
     suspend fun getBudgets(userId: String): List<Budget>
 
-    suspend fun isBudgetNameExists(userId: String, name: String): Boolean
+    suspend fun isBudgetNameExists(userId: String, name: String): Pair<Boolean, String?>
 
     suspend fun deleteBudget(userId: String, budgetId: String)
 }

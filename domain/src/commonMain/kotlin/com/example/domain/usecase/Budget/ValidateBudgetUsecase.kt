@@ -7,15 +7,10 @@ class ValidateBudgetUsecase(
     private val budgetRepository: BudgetRepository
 ) {
     suspend operator fun invoke(userId: String, budget: Budget): BudgetValidationResult {
-
-        if (budget.budgetAmount <= 0) {
-            return BudgetValidationResult.Error.InvalidAmount
-        }
-
-        if (budgetRepository.isBudgetNameExists(userId = userId, budget.budgetName)) {
+        val exist = budgetRepository.isBudgetNameExists(userId = userId, budget.budgetName)
+        if (exist.first && budget.budgetId != exist.second) {
             return BudgetValidationResult.Error.DuplicateName
         }
-
         return BudgetValidationResult.Valid
     }
 }
