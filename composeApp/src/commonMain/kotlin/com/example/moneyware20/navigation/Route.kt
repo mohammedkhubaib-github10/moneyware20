@@ -1,3 +1,5 @@
+package com.example.moneyware20.navigation
+
 import androidx.navigation3.runtime.NavKey
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_model.UserUIModel
@@ -16,5 +18,5 @@ sealed interface Route : NavKey {
     data class Home(val user: UserUIModel) : Route
 
     @Serializable
-    data class Expenses(val budget: BudgetUIModel): Route
+    data class Expenses(val budget: BudgetUIModel) : Route
 }

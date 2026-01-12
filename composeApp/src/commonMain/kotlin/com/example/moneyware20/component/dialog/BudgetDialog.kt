@@ -1,3 +1,5 @@
+package com.example.moneyware20.component.dialog
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.moneyware20.component.MoneywareTextField
 import com.example.presentation.DialogMode
+import primaryColor
 
 
 @Composable
@@ -75,7 +78,7 @@ fun BudgetDialog(
 
             /* ---------- AMOUNT ---------- */
             MoneywareTextField(
-                text = budgetAmount.toString(),
+                text = budgetAmount,
                 onValueChange = onBudgetAmountChange,
                 hint = "Budget amount",
                 modifier = Modifier.fillMaxWidth().padding(8.dp),

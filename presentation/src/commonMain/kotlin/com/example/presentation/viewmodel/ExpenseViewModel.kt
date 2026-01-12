@@ -106,7 +106,8 @@ class ExpenseViewModel(
             )
             createExpenseUsecase(expense)
             _expenseUIState.value = ExpenseUIState()
-            getExpensesByBudget(budgetId)
+            refreshExpense(budgetId)
+
         }
     }
 
@@ -136,19 +137,23 @@ class ExpenseViewModel(
             )
             updateExpenseUsecase(expense)
             _expenseUIState.value = ExpenseUIState()
-            getExpensesByBudget(budgetId)
+            refreshExpense(budgetId)
         }
     }
 
     fun onDeleteExpense(budgetId: String, expenseId: String) {
         viewModelScope.launch {
             deleteExpenseUsecase(expenseId)
-            getExpensesByBudget(budgetId = budgetId)
+            refreshExpense(budgetId)
         }
     }
 
     fun clearState() {
         _expenseList.value = emptyList()
         _expenseUIState.value = ExpenseUIState()
+    }
+
+    fun refreshExpense(budgetId: String) {
+        getExpensesByBudget(budgetId = budgetId)
     }
 }

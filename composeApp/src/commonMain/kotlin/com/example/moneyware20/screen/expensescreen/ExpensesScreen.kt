@@ -21,7 +21,7 @@ import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
-import com.example.ui.component.ExpenseDialog
+import com.example.moneyware20.component.dialog.ExpenseDialog
 import containerColor
 import primaryColor
 

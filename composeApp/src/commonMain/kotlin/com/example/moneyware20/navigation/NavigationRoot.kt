@@ -76,7 +76,6 @@ fun NavigationRoot(
                         val authState: AuthState = getKoin().get()
                         val user by authState.user.collectAsState()
                         LaunchedEffect(user) {
-                            println(user.toString() + " login")
                             user?.let { user ->
                                 backStack.removeLast()
                                 backStack.add(Route.Home(user))
@@ -94,7 +93,6 @@ fun NavigationRoot(
                         val authState: AuthState = getKoin().get()
                         val user by authState.user.collectAsState()
                         LaunchedEffect(user) {
-                            println(user.toString() + "  Home")
                             if (user == null) {
                                 backStack.clear()
                                 backStack.add(Route.Login)
@@ -118,11 +116,11 @@ fun NavigationRoot(
                         val budgetViewModel: BudgetViewModel = koinViewModel()
                         val list by expenseViewModel.expenseList.collectAsState()
                         LaunchedEffect(list) {
-                            expenseViewModel.getExpensesByBudget(key.budget.budgetId)
+                            expenseViewModel.refreshExpense(key.budget.budgetId)
                         }
-                        ExpensesScreen(key.budget, expenseViewModel, budgetViewModel, {
+                        ExpensesScreen(key.budget, expenseViewModel, budgetViewModel) {
                             backStack.removeLastOrNull()
-                        })
+                        }
                     }
                 }
 

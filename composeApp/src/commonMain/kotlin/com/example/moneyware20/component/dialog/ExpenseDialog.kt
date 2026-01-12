@@ -1,4 +1,4 @@
-package com.example.ui.component
+package com.example.moneyware20.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,6 +23,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -38,8 +39,9 @@ import androidx.compose.ui.window.Dialog
 import com.example.moneyware20.component.MoneywareTextField
 import com.example.presentation.DialogMode
 import containerColor
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
 import kotlinx.datetime.toLocalDateTime
@@ -63,9 +65,7 @@ fun ExpenseDialog(
     enabled: Boolean
 ) {
 
-    val myDateFormat = LocalDateTime.Format {
-        byUnicodePattern("dd-MM-yyyy")
-    }
+
     val titleText = if (mode == DialogMode.ADD) {
         "Add an Expense"
     } else {
@@ -195,7 +195,7 @@ fun MoneywareDatePicker(
     }
 
     val datePickerState = rememberDatePickerState(
-        selectableDates = object : androidx.compose.material3.SelectableDates {
+        selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 return utcTimeMillis <= todayMillis
             }
@@ -209,10 +209,10 @@ fun MoneywareDatePicker(
             TextButton(
                 onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
-                        val date = kotlinx.datetime.Instant
+                        val date = Instant
                             .fromEpochMilliseconds(millis)
                             .toLocalDateTime(
-                                kotlinx.datetime.TimeZone.currentSystemDefault()
+                                TimeZone.currentSystemDefault()
                             )
                             .date
 

@@ -1,7 +1,6 @@
 package com.example.moneyware20.screen.expensescreen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,16 +28,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.moneyware20.component.AutoSizeText
 import com.example.moneyware20.component.OverflowMenu
+import com.example.moneyware20.component.dialog.toDisplayText
 import com.example.presentation.DialogMode
-import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_model.ExpenseUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
-import com.example.ui.component.toDisplayText
-import tertiaryColor
 import kotlin.math.roundToInt
 
 @Composable
@@ -150,70 +146,3 @@ fun ExpenseCard(
     }
 }
 
-@Composable
-fun BudgetSummaryCard(
-    budget: BudgetUIModel,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(140.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = tertiaryColor // teal-green
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            SummaryItem(
-                label = "Balance",
-                value = "₹ ${budget.balance}"
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                SummaryItem(
-                    label = "Budget",
-                    value = "₹ ${budget.budgetAmount}"
-                )
-
-                SummaryItem(
-                    label = "Expenses",
-                    value = "₹ ${budget.totalExpense}"
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SummaryItem(
-    label: String,
-    value: String
-) {
-    Column {
-        Text(
-            text = label,
-            color = Color.White.copy(alpha = 0.85f),
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        AutoSizeText(
-            text = value,
-            fontWeight = FontWeight.Bold,
-            textColor = Color.White,
-            minFontSize = 16.sp,
-            maxFontSize = 20.sp
-        )
-    }
-}

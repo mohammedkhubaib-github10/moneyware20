@@ -3,11 +3,11 @@ package com.example.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Budget
-import com.example.domain.usecase.Budget.BudgetResult
-import com.example.domain.usecase.Budget.CreateBudgetUsecase
-import com.example.domain.usecase.Budget.DeleteBudgetUsecase
-import com.example.domain.usecase.Budget.GetBudgetUsecase
-import com.example.domain.usecase.Budget.UpdateBudgetUsecase
+import com.example.domain.usecase.budget.BudgetResult
+import com.example.domain.usecase.budget.CreateBudgetUsecase
+import com.example.domain.usecase.budget.DeleteBudgetUsecase
+import com.example.domain.usecase.budget.GetBudgetUsecase
+import com.example.domain.usecase.budget.UpdateBudgetUsecase
 import com.example.domain.usecase.GetBudgetSummaryUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.expense.GetExpenseUsecase

@@ -1,4 +1,4 @@
-package com.example.domain.usecase.Budget
+package com.example.domain.usecase.budget
 
 import com.example.domain.repository.BudgetRepository
 

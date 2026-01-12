@@ -1,6 +1,6 @@
 package com.example.moneyware20.screen.homescreen
 
-import BudgetDialog
+import com.example.moneyware20.component.dialog.BudgetDialog
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

@@ -14,11 +14,11 @@ import com.example.domain.repository.AuthenticationRepository
 import com.example.domain.repository.BudgetRepository
 import com.example.domain.repository.ExpenseRepository
 import com.example.domain.usecase.AuthenticateUsecase
-import com.example.domain.usecase.Budget.CreateBudgetUsecase
-import com.example.domain.usecase.Budget.DeleteBudgetUsecase
-import com.example.domain.usecase.Budget.GetBudgetUsecase
-import com.example.domain.usecase.Budget.UpdateBudgetUsecase
-import com.example.domain.usecase.Budget.ValidateBudgetUsecase
+import com.example.domain.usecase.budget.CreateBudgetUsecase
+import com.example.domain.usecase.budget.DeleteBudgetUsecase
+import com.example.domain.usecase.budget.GetBudgetUsecase
+import com.example.domain.usecase.budget.UpdateBudgetUsecase
+import com.example.domain.usecase.budget.ValidateBudgetUsecase
 import com.example.domain.usecase.GetBudgetSummaryUsecase
 import com.example.domain.usecase.GetUserUsecase
 import com.example.domain.usecase.SignOutUsecase
