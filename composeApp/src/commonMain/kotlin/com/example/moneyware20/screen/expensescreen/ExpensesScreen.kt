@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -21,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.moneyware20.component.header.Header
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
+import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.ui.component.ExpenseDialog
 import containerColor
@@ -30,16 +29,16 @@ import primaryColor
 @Composable
 fun ExpensesScreen(
     budgetUIModel: BudgetUIModel,
-    viewModel: ExpenseViewModel,
+    expenseViewModel: ExpenseViewModel,
+    budgetViewModel: BudgetViewModel,
     onNavigation: () -> Unit
 ) {
     var navigationConsumed by remember { mutableStateOf(false) }
 
-    val uiState by viewModel.expenseUIState.collectAsState()
-    val expenseList by viewModel.expenseList.collectAsState()
+    val uiState by expenseViewModel.expenseUIState.collectAsState()
     DisposableEffect(Unit) {
         onDispose {
-            viewModel.clearState()
+            expenseViewModel.clearState()
         }
     }
     Scaffold(
@@ -54,7 +53,7 @@ fun ExpensesScreen(
         },
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            FabExpenses(viewModel)
+            FabExpenses(expenseViewModel)
         }
     ) {
         Box(
@@ -69,18 +68,7 @@ fun ExpensesScreen(
                     indicatorColor = primaryColor
                 )
             } else {
-                if (expenseList.isNotEmpty()) ExpenseList(
-                    expenseList,
-                    viewModel,
-                    budgetUIModel.budgetId
-                )
-                else Text(
-                    text = "No Result",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.align(
-                        Alignment.Center
-                    )
-                )
+                ExpenseList(expenseViewModel, budgetViewModel, budgetUIModel.budgetId)
             }
         }
     }
@@ -90,31 +78,31 @@ fun ExpensesScreen(
             expenseName = uiState.expenseName,
             expenseAmount = uiState.expenseAmount,
             selectedDate = uiState.date,
-            onExpenseNameChange = { viewModel.onExpenseNameChange(it) },
+            onExpenseNameChange = { expenseViewModel.onExpenseNameChange(it) },
             onExpenseAmountChange = {
                 val filtered = it
                     .filter { it.isDigit() || it == '.' }
 
                 if (filtered.count { it == '.' } <= 1) {
-                    viewModel.onExpenseAmountChange(filtered)
+                    expenseViewModel.onExpenseAmountChange(filtered)
                 }
             },
-            onDateChange = { viewModel.onDateChange(it) },
+            onDateChange = { expenseViewModel.onDateChange(it) },
             onAddClick = {
-                viewModel.setButton(false)
+                expenseViewModel.setButton(false)
 
                 if (uiState.dialogMode == DialogMode.ADD) {
-                    viewModel.onAddExpense(budgetUIModel.budgetId)
+                    expenseViewModel.onAddExpense(budgetUIModel.budgetId)
                 } else {
-                    viewModel.onEditExpense(budgetUIModel.budgetId)
+                    expenseViewModel.onEditExpense(budgetUIModel.budgetId)
                 }
             },
             onCancelClick = {
-                viewModel.setDialog(false)
-                viewModel.onCancel()
+                expenseViewModel.setDialog(false)
+                expenseViewModel.onCancel()
             },
             enabled = uiState.buttonState,
-            setDatePicker = { viewModel.setDatePicker(it) },
+            setDatePicker = { expenseViewModel.setDatePicker(it) },
             datePickerState = uiState.datePickerState
         )
     }

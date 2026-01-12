@@ -9,7 +9,6 @@ fun Budget.toUIModel(): BudgetUIModel = BudgetUIModel(
     budgetName = budgetName,
     budgetAmount = budgetAmount.toString()
 )
-
 fun Budget.toBudgetCard(
     expenses: List<Expense>
 ): BudgetUIModel {
