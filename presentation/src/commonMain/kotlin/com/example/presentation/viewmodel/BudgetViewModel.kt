@@ -9,9 +9,10 @@ import com.example.domain.usecase.Budget.DeleteBudgetUsecase
 import com.example.domain.usecase.Budget.GetBudgetUsecase
 import com.example.domain.usecase.Budget.UpdateBudgetUsecase
 import com.example.domain.usecase.SignOutUsecase
+import com.example.domain.usecase.expense.GetExpenseUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.DialogMode
-import com.example.presentation.mapper.toUIModel
+import com.example.presentation.mapper.toBudgetCard
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_state.BudgetUIState
@@ -25,6 +26,7 @@ class BudgetViewModel(
     private val updateBudgetUsecase: UpdateBudgetUsecase,
     private val deleteBudgetUsecase: DeleteBudgetUsecase,
     private val signOutUsecase: SignOutUsecase,
+    private val getExpenseUsecase: GetExpenseUsecase,
     private val authState: AuthState
 ) : ViewModel() {
 
@@ -118,17 +120,28 @@ class BudgetViewModel(
         }
     }
 
+
     fun getBudgets() {
         val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
-            val list = getBudgetUsecase(userId)
-            _budgetList.value = list.map {
-                it.toUIModel()
+
+            val budgets = getBudgetUsecase(userId)
+            val expenses = getExpenseUsecase(userId) // ALL expenses
+
+            val budgetCards = budgets.map { budget ->
+                val budgetExpenses = expenses.filter {
+                    it.budgetId == budget.budgetId
+                }
+
+                budget.toBudgetCard(budgetExpenses)
             }
+
+            _budgetList.value = budgetCards
             _budgetUIState.value = _budgetUIState.value.copy(isLoading = false)
 
         }
     }
+
 
     fun onEditBudget() {
         val userId = authState.user.value?.userId ?: return

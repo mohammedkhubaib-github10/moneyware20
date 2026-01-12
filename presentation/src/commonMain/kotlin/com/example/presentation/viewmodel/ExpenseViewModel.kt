@@ -115,19 +115,9 @@ class ExpenseViewModel(
 
     fun getExpensesByBudget(budgetId: String) {
         val userId = authState.user.value?.userId ?: return
+
         viewModelScope.launch {
             val list = getExpenseUsecase(userId, budgetId)
-            _expenseList.value = list.map {
-                it.toUIModel()
-            }
-            _expenseUIState.value = _expenseUIState.value.copy(isLoading = false)
-        }
-    }
-
-    fun getExpenseByUser() {
-        val userId = authState.user.value?.userId ?: return
-        viewModelScope.launch {
-            val list = getExpenseUsecase(userId)
             _expenseList.value = list.map {
                 it.toUIModel()
             }
@@ -163,7 +153,7 @@ class ExpenseViewModel(
         }
     }
 
-    private fun clearState() {
+    fun clearState() {
         _expenseList.value = emptyList()
         _expenseUIState.value = ExpenseUIState()
     }

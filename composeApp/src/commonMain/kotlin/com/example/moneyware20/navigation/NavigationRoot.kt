@@ -60,7 +60,6 @@ fun NavigationRoot(
                         val user by authState.user.collectAsState()
                         LaunchedEffect(user) {
                             backStack.removeLast()
-                            println(user.toString())
                             if (user != null) {
                                 backStack.add(Route.Home(user!!))
                             } else {
