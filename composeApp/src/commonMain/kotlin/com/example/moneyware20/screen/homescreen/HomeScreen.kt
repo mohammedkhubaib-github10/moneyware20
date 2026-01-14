@@ -1,6 +1,5 @@
 package com.example.moneyware20.screen.homescreen
 
-import com.example.moneyware20.component.dialog.BudgetDialog
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.moneyware20.component.dialog.BudgetDialog
 import com.example.moneyware20.component.header.MainHeader
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
@@ -51,7 +51,7 @@ fun HomeScreen(
     ) {
         Scaffold(
             topBar = {
-                MainHeader(onActionIconClick = {}, onNavigationIconClick = {
+                MainHeader(onNavigationIconClick = {
                     scope.launch {
                         drawerState.open()
                     }

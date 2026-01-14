@@ -31,7 +31,6 @@ import primaryColor
 @Composable
 fun MainHeader(
     onNavigationIconClick: () -> Unit,
-    onActionIconClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     MediumTopAppBar(
@@ -66,24 +65,6 @@ fun MainHeader(
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "Menu",
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        },
-        actions = {
-            TooltipBox(
-                positionProvider =
-                    TooltipDefaults.rememberTooltipPositionProvider(
-                        TooltipAnchorPosition.Above
-                    ),
-                tooltip = { PlainTooltip { Text("Notifications") } },
-                state = rememberTooltipState(),
-            ) {
-                IconButton(onClick = onActionIconClick) {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notifications",
                         modifier = Modifier.size(24.dp)
                     )
                 }
