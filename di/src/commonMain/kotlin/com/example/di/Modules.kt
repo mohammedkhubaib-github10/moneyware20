@@ -22,6 +22,7 @@ import com.example.domain.usecase.budget.ValidateBudgetUsecase
 import com.example.domain.usecase.GetBudgetSummaryUsecase
 import com.example.domain.usecase.GetUserUsecase
 import com.example.domain.usecase.SignOutUsecase
+import com.example.domain.usecase.budget.GetOrCreateMonthlyBudgetUsecase
 import com.example.domain.usecase.expense.CreateExpenseUsecase
 import com.example.domain.usecase.expense.DeleteExpenseUsecase
 import com.example.domain.usecase.expense.GetExpenseUsecase
@@ -71,4 +72,5 @@ val domainModule = module {
     factoryOf(::UpdateExpenseUsecase)
     factoryOf(::DeleteExpenseUsecase)
     factoryOf(::GetBudgetSummaryUsecase)
+    factoryOf(::GetOrCreateMonthlyBudgetUsecase)
 }
