@@ -52,7 +52,6 @@ val dataModule = module {
     singleOf(::BudgetRepositoryImpl) { bind<BudgetRepository>() }
     singleOf(::FirebaseBudgetRemoteDataSource) { bind<BudgetRemoteDataSource>() }
     singleOf(::FirebaseExpenseRemoteDataSource) { bind<ExpenseRemoteDataSource>() }
-    singleOf(::AuthenticationSourceImpl) { bind<AuthenticationSource>() }
     singleOf(::AuthenticationRepositoryImpl) { bind<AuthenticationRepository>() }
     singleOf(::ExpenseRepositoryImpl) { bind<ExpenseRepository>() }
 
