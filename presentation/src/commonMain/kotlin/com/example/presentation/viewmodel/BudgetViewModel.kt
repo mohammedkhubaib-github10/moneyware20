@@ -6,6 +6,7 @@ import com.example.domain.entity.Budget
 import com.example.domain.usecase.GetBudgetSummaryUsecase
 import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.budget.BudgetResult
+import com.example.domain.usecase.budget.CleanupExpensesUsecase
 import com.example.domain.usecase.budget.CreateBudgetUsecase
 import com.example.domain.usecase.budget.DeleteBudgetUsecase
 import com.example.domain.usecase.budget.GetBudgetUsecase
@@ -17,9 +18,12 @@ import com.example.presentation.mapper.toBudgetCard
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_state.BudgetUIState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
@@ -30,6 +34,7 @@ class BudgetViewModel(
     private val getExpenseUsecase: GetExpenseUsecase,
     private val getBudgetSummaryUsecase: GetBudgetSummaryUsecase,
     private val authState: AuthState,
+    private val cleanupExpensesUsecase: CleanupExpensesUsecase
 ) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
@@ -170,6 +175,7 @@ class BudgetViewModel(
         viewModelScope.launch {
             deleteBudgetUsecase(userId = userId, budgetId = budgetId)
             refreshBudgets()
+            cleanupExpensesUsecase(userId, budgetId)
 
         }
     }
