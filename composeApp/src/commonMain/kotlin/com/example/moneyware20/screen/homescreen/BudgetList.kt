@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -15,8 +16,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moneyware20.component.OverflowMenu
@@ -33,8 +38,11 @@ import com.example.moneyware20.component.budget_card.BudgetProgress
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
+import containerColor
+import primaryColor
 import kotlin.math.roundToInt
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BudgetList(
     budgetList: List<BudgetUIModel>,
@@ -47,18 +55,43 @@ fun BudgetList(
         isRefreshing = uiState.isRefreshing,
         state = state,
         onRefresh = {
+            viewModel.setRefreshing(true)
             viewModel.refreshBudgets()
         },
+        indicator = {
+            PullToRefreshDefaults.LoadingIndicator(
+                state = state,
+                isRefreshing = uiState.isRefreshing,
+                containerColor = containerColor,
+                color = primaryColor,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        },
+        modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(budgetList) { budget ->
-                BudgetCard(budget, viewModel, onClick)
+            if (budgetList.isEmpty()) {
+                item {
+                    Text(
+                        text = "No Result",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 48.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                items(budgetList) { budget ->
+                    BudgetCard(budget, viewModel, onClick)
+                }
             }
         }
     }
 }
+
 
 @Composable
 fun BudgetCard(

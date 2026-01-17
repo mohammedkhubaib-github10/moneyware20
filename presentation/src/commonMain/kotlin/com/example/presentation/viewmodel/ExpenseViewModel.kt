@@ -86,6 +86,10 @@ class ExpenseViewModel(
         )
     }
 
+    fun setRefreshing(boolean: Boolean) {
+        _expenseUIState.value = _expenseUIState.value.copy(isRefreshing = boolean)
+    }
+
     fun onCancel() {
         _expenseUIState.value = _expenseUIState.value.copy(expenseName = "", expenseAmount = "")
     }
@@ -94,7 +98,6 @@ class ExpenseViewModel(
         val userId = authState.user.value?.userId ?: return
 
         viewModelScope.launch {
-
             val uiState = _expenseUIState.value
             val expense = Expense(
                 expenseId = uiState.expenseId,
@@ -119,6 +122,7 @@ class ExpenseViewModel(
                 it.toUIModel()
             }
             _expenseUIState.value = _expenseUIState.value.copy(isLoading = false)
+            setRefreshing(false)
         }
     }
 

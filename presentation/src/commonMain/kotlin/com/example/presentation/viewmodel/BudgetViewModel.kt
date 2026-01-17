@@ -132,7 +132,6 @@ class BudgetViewModel(
     fun getBudgets() {
         val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
-            setRefreshing(true)
             val budgets = getBudgetUsecase(userId)
             val expenses = getExpenseUsecase(userId) // ALL expenses
             val budgetSummaries = getBudgetSummaryUsecase(budgets, expenses)

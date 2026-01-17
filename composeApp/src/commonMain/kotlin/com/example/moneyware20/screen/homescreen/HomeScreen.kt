@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +40,8 @@ fun HomeScreen(
     val budgetList by viewModel.budgetList.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+
     MoneywareDrawer(
         drawerState = drawerState,
         userName = if (user.userName != null) user.userName!! else "User",
@@ -63,11 +62,7 @@ fun HomeScreen(
                 FabBudget(viewModel)
             }
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
-            ) {
+            Box(modifier = Modifier.fillMaxSize().padding(it)) {
                 if (uiState.isLoading) {
                     ContainedLoadingIndicator(
                         modifier = Modifier.padding(24.dp).align(Alignment.Center),
@@ -75,14 +70,7 @@ fun HomeScreen(
                         indicatorColor = primaryColor
                     )
                 } else {
-                    if (budgetList.isNotEmpty()) BudgetList(budgetList, viewModel, onBudgetClick)
-                    else Text(
-                        text = "No Result",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(
-                            Alignment.Center
-                        )
-                    )
+                    BudgetList(budgetList, viewModel, onBudgetClick)
                 }
             }
         }

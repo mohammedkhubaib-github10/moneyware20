@@ -13,5 +13,6 @@ data class ExpenseUIState(
     val dialogMode: DialogMode = DialogMode.ADD,
     val isLoading: Boolean = true,
     val buttonState: Boolean = true,
-    val datePickerState: Boolean = false
+    val datePickerState: Boolean = false,
+    val isRefreshing: Boolean = false
 )

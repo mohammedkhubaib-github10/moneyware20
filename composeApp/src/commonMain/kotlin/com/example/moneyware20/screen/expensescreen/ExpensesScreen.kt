@@ -16,12 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.moneyware20.component.dialog.ExpenseDialog
 import com.example.moneyware20.component.header.Header
 import com.example.presentation.DialogMode
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
-import com.example.moneyware20.component.dialog.ExpenseDialog
 import containerColor
 import primaryColor
 
@@ -34,7 +34,6 @@ fun ExpensesScreen(
     onNavigation: () -> Unit
 ) {
     var navigationConsumed by remember { mutableStateOf(false) }
-
     val uiState by expenseViewModel.expenseUIState.collectAsState()
     DisposableEffect(Unit) {
         onDispose {
@@ -56,11 +55,7 @@ fun ExpensesScreen(
             FabExpenses(expenseViewModel)
         }
     ) {
-        Box(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
+        Box(modifier = Modifier.fillMaxSize().padding(it)) {
             if (uiState.isLoading) {
                 ContainedLoadingIndicator(
                     modifier = Modifier.padding(24.dp).align(Alignment.Center),
@@ -70,6 +65,7 @@ fun ExpensesScreen(
             } else {
                 ExpenseList(expenseViewModel, budgetViewModel, budgetUIModel.budgetId)
             }
+
         }
     }
     if (uiState.dialogState) {
