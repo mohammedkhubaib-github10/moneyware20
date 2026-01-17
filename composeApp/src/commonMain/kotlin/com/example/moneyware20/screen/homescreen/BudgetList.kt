@@ -16,7 +16,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,11 +41,21 @@ fun BudgetList(
     viewModel: BudgetViewModel,
     onClick: (BudgetUIModel) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
+    val state = rememberPullToRefreshState()
+    val uiState by viewModel.budgetUIState.collectAsState()
+    PullToRefreshBox(
+        isRefreshing = uiState.isRefreshing,
+        state = state,
+        onRefresh = {
+            viewModel.refreshBudgets()
+        },
     ) {
-        items(budgetList) { budget ->
-            BudgetCard(budget, viewModel, onClick)
+        LazyColumn(
+            modifier = Modifier
+        ) {
+            items(budgetList) { budget ->
+                BudgetCard(budget, viewModel, onClick)
+            }
         }
     }
 }
@@ -90,7 +104,7 @@ fun BudgetCard(
 
             // Progress
             BudgetProgress(
-                spentPercent = budget.percentageUsed.toFloat()/100,
+                spentPercent = budget.percentageUsed.toFloat() / 100,
                 modifier = Modifier.align(Alignment.CenterHorizontally).offset(y = -20.dp)
             )
 

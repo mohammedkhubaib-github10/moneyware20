@@ -23,10 +23,10 @@ class SmsExpenseImporter(
             parsed.merchant,
             parsed.timestamp
         )
+        Log.d("trans", parsed.toString())
         //  Dedup check
         if (processedStore.isProcessed(key)) return
 
-        Log.d("msg", parsed.toString())
         // Map to Expense
         val expense =
             parsed.toExpense(

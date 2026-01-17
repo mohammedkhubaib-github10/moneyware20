@@ -38,7 +38,7 @@ class SmsReceiver : BroadcastReceiver() {
                     Log.d("SmsReceiver", "SMS from $sender: $body")
                     val parsed = parser.parse(sms.messageBody, sms.timestampMillis)
 //                    importer.import(
-//                        parsed
+//                        parsed,
 //                    )
                 }
             } catch (e: Exception) {

@@ -10,5 +10,6 @@ data class BudgetUIState(
     val dialogMode: DialogMode = DialogMode.ADD,
     val dialogState: Boolean = false,
     val buttonState: Boolean = true,
-    val error: String? = null
+    val error: String? = null,
+    val isRefreshing: Boolean = false
 )

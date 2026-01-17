@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.READ_SMS
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d("helo", "permission")
             smsViewModel.observeAndImport()
         } else {
             smsPermissionLauncher.launch(Manifest.permission.READ_SMS)
@@ -71,6 +73,8 @@ class MainActivity : ComponentActivity() {
             requestPermissionLauncher.launch(
                 Manifest.permission.POST_NOTIFICATIONS
             )
+        } else {
+            requestSmsPermission()
         }
     }
 }

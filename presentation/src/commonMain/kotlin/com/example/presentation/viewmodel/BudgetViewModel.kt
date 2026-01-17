@@ -18,12 +18,9 @@ import com.example.presentation.mapper.toBudgetCard
 import com.example.presentation.mapper.toUiMessage
 import com.example.presentation.ui_model.BudgetUIModel
 import com.example.presentation.ui_state.BudgetUIState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class BudgetViewModel(
     private val createBudgetUsecase: CreateBudgetUsecase,
@@ -95,6 +92,10 @@ class BudgetViewModel(
         _budgetUIState.value = _budgetUIState.value.copy(error = message)
     }
 
+    fun setRefreshing(boolean: Boolean) {
+        _budgetUIState.value = _budgetUIState.value.copy(isRefreshing = boolean)
+    }
+
     //actions
     fun onAddBudget() {
         val userId = authState.user.value?.userId ?: run {
@@ -131,6 +132,7 @@ class BudgetViewModel(
     fun getBudgets() {
         val userId = authState.user.value?.userId ?: return
         viewModelScope.launch {
+            setRefreshing(true)
             val budgets = getBudgetUsecase(userId)
             val expenses = getExpenseUsecase(userId) // ALL expenses
             val budgetSummaries = getBudgetSummaryUsecase(budgets, expenses)
@@ -139,7 +141,7 @@ class BudgetViewModel(
             }
             _budgetList.value = budgetCards
             _budgetUIState.value = _budgetUIState.value.copy(isLoading = false)
-
+            setRefreshing(false)
         }
     }
 
