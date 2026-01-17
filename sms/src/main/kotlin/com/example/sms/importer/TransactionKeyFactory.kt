@@ -3,10 +3,10 @@ package com.example.sms.importer
 object TransactionKeyFactory {
 
     fun from(
-        amount: Double,
-        merchant: String,
-        timestamp: Long
+        normAmount: String,
+        normMerchant: String,
+        bucketTimestamp: Long
     ): String {
-        return "$amount|$merchant|$timestamp"
+        return "$normAmount|$normMerchant|$bucketTimestamp"
     }
 }

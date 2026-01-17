@@ -1,7 +1,6 @@
 package com.example.sms.parser
 
 import android.util.Log
-import com.example.sms.helper.normalizeMerchant
 
 class GenericDebitSmsParser : SmsParser {
 
@@ -17,7 +16,7 @@ class GenericDebitSmsParser : SmsParser {
         Log.d("merch", merchant)
         val transaction = ParsedTransaction(
             amount = amount,
-            merchant = merchant.normalizeMerchant(),
+            merchant = merchant,
             timestamp = timestamp
         )
         return transaction

@@ -1,13 +1,16 @@
 package com.example.sms.importer
 
 import android.util.Log
-import com.example.domain.usecase.expense.CreateExpenseUsecase
+import com.example.domain.usecase.expense.CreateProcessedExpenseUsecase
+import com.example.sms.helper.bucketTimestamp
+import com.example.sms.helper.normalizeAmount
+import com.example.sms.helper.normalizeMerchant
+import com.example.sms.helper.sha256
 import com.example.sms.helper.toExpense
 import com.example.sms.parser.ParsedTransaction
 
 class SmsExpenseImporter(
-    private val createExpenseUsecase: CreateExpenseUsecase,
-    private val processedStore: ProcessedTransactionStore
+    private val createProcessedExpense: CreateProcessedExpenseUsecase
 ) {
 
     suspend fun import(
@@ -19,25 +22,17 @@ class SmsExpenseImporter(
         if (parsed == null) return
         //  Create dedup key
         val key = TransactionKeyFactory.from(
-            parsed.amount,
-            parsed.merchant,
-            parsed.timestamp
+            normalizeAmount(parsed.amount),
+            normalizeMerchant(parsed.merchant),
+            bucketTimestamp(parsed.timestamp)
         )
+        val hash = sha256(key)
         Log.d("trans", parsed.toString())
-        //  Dedup check
-        if (processedStore.isProcessed(key)) return
-
-        // Map to Expense
         val expense =
             parsed.toExpense(
                 userId = userId,
                 budgetId = budgetId
             )
-
-        // Create expense
-        createExpenseUsecase(expense)
-
-        // Mark processed
-        processedStore.markProcessed(key)
+        createProcessedExpense(userId, hash, parsed.timestamp, expense)
     }
 }

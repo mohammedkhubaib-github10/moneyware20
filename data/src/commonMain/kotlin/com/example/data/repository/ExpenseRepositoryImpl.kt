@@ -35,4 +35,20 @@ class ExpenseRepositoryImpl(private val expenseRemoteDataSource: ExpenseRemoteDa
     override suspend fun deleteExpense(expenseId: String) {
         expenseRemoteDataSource.deleteExpense(expenseId)
     }
+
+    override suspend fun createProcessedExpense(
+        userId: String,
+        hash: String,
+        smsTimeStamp: Long,
+        expense: Expense
+    ): Boolean {
+        return expenseRemoteDataSource.createProcessedExpense(
+            userId,
+            hash,
+            smsTimeStamp,
+            expense.toDto()
+        )
+    }
+
+
 }

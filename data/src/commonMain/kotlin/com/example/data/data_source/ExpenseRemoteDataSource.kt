@@ -15,4 +15,5 @@ interface ExpenseRemoteDataSource {
     ): List<Pair<String, ExpenseDto>>
 
     suspend fun deleteExpense(expenseId: String)
+    suspend fun createProcessedExpense(userId: String, hash: String, smsTimeStamp: Long, dto: ExpenseDto): Boolean
 }

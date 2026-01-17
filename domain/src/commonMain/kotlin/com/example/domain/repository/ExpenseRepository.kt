@@ -13,4 +13,10 @@ interface ExpenseRepository {
     suspend fun getExpensesByBudget(userId: String, budgetId: String): List<Expense>
 
     suspend fun deleteExpense(expenseId: String)
+    suspend fun createProcessedExpense(
+        userId: String,
+        hash: String,
+        smsTimeStamp: Long,
+        expense: Expense
+    ): Boolean
 }

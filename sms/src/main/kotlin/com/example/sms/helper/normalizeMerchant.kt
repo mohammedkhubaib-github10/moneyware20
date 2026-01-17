@@ -1,7 +1,9 @@
 package com.example.sms.helper
 
-fun String.normalizeMerchant(): String {
-    return this
-        .lowercase()
-        .replace(Regex("[^a-z0-9]"), "")
+fun normalizeMerchant(merchant: String): String {
+    return merchant
+        .uppercase()
+        .replace(Regex("[^A-Z0-9 ]"), " ")   // keep spaces
+        .replace(Regex("\\s+"), " ")         // collapse spaces
+        .trim()
 }
