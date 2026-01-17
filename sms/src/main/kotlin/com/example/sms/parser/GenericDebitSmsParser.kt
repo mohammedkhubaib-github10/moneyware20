@@ -1,5 +1,8 @@
 package com.example.sms.parser
 
+import android.util.Log
+import com.example.sms.helper.normalizeMerchant
+
 class GenericDebitSmsParser : SmsParser {
 
     override fun parse(
@@ -11,9 +14,10 @@ class GenericDebitSmsParser : SmsParser {
 
         val amount = AmountExtractor.extract(message) ?: return null
         val merchant = MerchantExtractor.extract(message)
+        Log.d("merch", merchant)
         val transaction = ParsedTransaction(
             amount = amount,
-            merchant = merchant,
+            merchant = merchant.normalizeMerchant(),
             timestamp = timestamp
         )
         return transaction
