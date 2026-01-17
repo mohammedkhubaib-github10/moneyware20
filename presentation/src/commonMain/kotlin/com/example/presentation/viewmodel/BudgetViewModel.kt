@@ -3,13 +3,13 @@ package com.example.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Budget
+import com.example.domain.usecase.GetBudgetSummaryUsecase
+import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.budget.BudgetResult
 import com.example.domain.usecase.budget.CreateBudgetUsecase
 import com.example.domain.usecase.budget.DeleteBudgetUsecase
 import com.example.domain.usecase.budget.GetBudgetUsecase
 import com.example.domain.usecase.budget.UpdateBudgetUsecase
-import com.example.domain.usecase.GetBudgetSummaryUsecase
-import com.example.domain.usecase.SignOutUsecase
 import com.example.domain.usecase.expense.GetExpenseUsecase
 import com.example.presentation.AuthState
 import com.example.presentation.DialogMode
@@ -29,7 +29,7 @@ class BudgetViewModel(
     private val signOutUsecase: SignOutUsecase,
     private val getExpenseUsecase: GetExpenseUsecase,
     private val getBudgetSummaryUsecase: GetBudgetSummaryUsecase,
-    private val authState: AuthState
+    private val authState: AuthState,
 ) : ViewModel() {
 
     private val _budgetUIState = MutableStateFlow(BudgetUIState())
@@ -188,6 +188,7 @@ class BudgetViewModel(
         authState.onLogout()
         signOutUsecase()
     }
+
     fun refreshBudgets() {
         getBudgets()
     }

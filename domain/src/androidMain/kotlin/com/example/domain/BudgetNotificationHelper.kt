@@ -11,7 +11,7 @@ class BudgetNotificationHelper(
     private val context: Context
 ) {
 
-    companion object {
+    companion object {  // static variable equivalent in java
         private const val CHANNEL_ID = "budget_alerts"
     }
 

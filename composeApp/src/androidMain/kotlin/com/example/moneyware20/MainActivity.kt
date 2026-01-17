@@ -10,8 +10,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.example.presentation.SmsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val smsViewModel: SmsViewModel by viewModel()
+    private val smsPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                smsViewModel.observeAndImport()
+            }
+        }
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -21,18 +33,19 @@ class MainActivity : ComponentActivity() {
             } else {
 
             }
+            requestSmsPermission()
         }
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
+        requestNotificationPermissionIfNeeded()
         setContent {
             App()
         }
-        requestNotificationPermissionIfNeeded()
-        requestSmsPermission()
+
 
     }
 
@@ -40,16 +53,11 @@ class MainActivity : ComponentActivity() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_SMS
-            ) != PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissionLauncher.launch(Manifest.permission.READ_SMS)
-        }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.RECEIVE_SMS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionLauncher.launch(Manifest.permission.RECEIVE_SMS)
+            smsViewModel.observeAndImport()
+        } else {
+            smsPermissionLauncher.launch(Manifest.permission.READ_SMS)
         }
     }
 
@@ -57,7 +65,7 @@ class MainActivity : ComponentActivity() {
     private fun requestNotificationPermissionIfNeeded() {
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissionLauncher.launch(
@@ -66,5 +74,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 

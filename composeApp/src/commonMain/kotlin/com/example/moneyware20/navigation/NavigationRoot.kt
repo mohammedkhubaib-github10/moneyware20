@@ -40,6 +40,7 @@ fun NavigationRoot(
                 )
                 subclass(Route.Login::class, Route.Login.serializer())
                 subclass(Route.Home::class, Route.Home.serializer())
+                subclass(Route.Expenses::class, Route.Expenses.serializer())
             }
         }
     }, Route.Splash)

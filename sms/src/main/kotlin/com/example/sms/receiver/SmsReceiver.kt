@@ -6,6 +6,7 @@ import android.content.Intent
 import android.provider.Telephony
 import android.util.Log
 import com.example.sms.importer.SmsExpenseImporter
+import com.example.sms.parser.SmsParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,8 @@ class SmsReceiver : BroadcastReceiver() {
         val importer: SmsExpenseImporter =
             get(SmsExpenseImporter::class.java)
 
+        val parser: SmsParser = get(SmsParser::class.java)
+
         val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
 
         //  Offload work to background (IO-bound)
@@ -33,11 +36,10 @@ class SmsReceiver : BroadcastReceiver() {
                     val body = sms.messageBody
 
                     Log.d("SmsReceiver", "SMS from $sender: $body")
-
-                    importer.import(
-                        body = body,
-                        timestamp = sms.timestampMillis
-                    )
+                    val parsed = parser.parse(sms.messageBody, sms.timestampMillis)
+//                    importer.import(
+//                        parsed
+//                    )
                 }
             } catch (e: Exception) {
                 Log.e("SmsReceiver", "Error processing SMS", e)

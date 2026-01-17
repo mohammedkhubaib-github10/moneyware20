@@ -11,10 +11,10 @@ class DeleteBudgetUsecase(
         val expenses =
             expenseRepository.getExpensesByBudget(userId, budgetId)
 
+        budgetRepository.deleteBudget(userId = userId, budgetId = budgetId)
         // 2️⃣ Delete all expenses
         expenses.forEach {
             expenseRepository.deleteExpense(it.expenseId)
         }
-        budgetRepository.deleteBudget(userId = userId, budgetId = budgetId)
     }
 }

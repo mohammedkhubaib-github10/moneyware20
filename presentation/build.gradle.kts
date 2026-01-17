@@ -67,6 +67,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.kotlinx.datetime)
                 implementation(project(":domain"))
+                implementation(project(":sms"))
                 // Add KMP dependencies here
             }
         }

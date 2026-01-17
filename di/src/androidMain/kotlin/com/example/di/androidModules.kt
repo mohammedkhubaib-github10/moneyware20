@@ -1,5 +1,7 @@
 package com.example.di
+
 import BudgetNotificationHelper
+import SmsInbox
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -11,12 +13,15 @@ import com.example.domain.AndroidBudgetThresholdNotifier
 import com.example.domain.BudgetNotificationStoreImpl
 import com.example.domain.notification.BudgetNotificationStore
 import com.example.domain.notification.BudgetThresholdNotifier
-import com.example.presentation.AuthState
+import com.example.presentation.AutonomousEntry
+import com.example.presentation.SmsViewModel
 import com.example.sms.importer.ProcessedTransactionStore
 import com.example.sms.importer.ProcessedTransactionStoreImpl
 import com.example.sms.importer.SmsExpenseImporter
 import com.example.sms.parser.GenericDebitSmsParser
+import com.example.sms.parser.SmsParser
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -33,6 +38,12 @@ val BudgetDataStore = named("budgetDataStore")
 val SmsDedupDataStore = named("smsDedupDataStore")
 
 // ---------- Module ----------
+
+val androidViewModelModule = module {
+    viewModel {
+        SmsViewModel(get(), get())
+    }
+}
 val androidDataStoreModule = module {
 
     single<DataStore<Preferences>>(BudgetDataStore) {
@@ -61,9 +72,22 @@ val androidAuthModule = module {
 val smsModule = module {
 
     // Parser (pure)
-    single {
+    single<SmsParser> {
         GenericDebitSmsParser()
     }
+    single {
+        SmsInbox(androidContext())
+    }
+
+    single {
+        AutonomousEntry(
+            smsInbox = get(),
+            importer = get(),
+            smsParser = get(),
+            getOrCreateMonthlyBudgetUsecase = get()
+        )
+    }
+
 
     // Dedup store
     single<ProcessedTransactionStore> {
@@ -75,11 +99,8 @@ val smsModule = module {
     // Importer (orchestrator)
     single {
         SmsExpenseImporter(
-            parser = get(),
             createExpenseUsecase = get(),
-            processedStore = get(),
-            getOrCreateCurrentMonthBudget = get(),
-            userIdProvider = { get<AuthState>().user.value?.userId }
+            processedStore = get()
         )
     }
 }
@@ -92,7 +113,7 @@ val notificationModule = module {
     }
 
     single {
-        BudgetNotificationHelper(get())
+        BudgetNotificationHelper(androidContext())
     }
 
     single<BudgetThresholdNotifier> {

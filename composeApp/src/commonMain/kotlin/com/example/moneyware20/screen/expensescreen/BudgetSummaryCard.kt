@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.moneyware20.component.AutoSizeText
 import com.example.presentation.ui_model.BudgetUIModel
 import tertiaryColor
+import kotlin.math.roundToInt
 
 @Composable
 fun BudgetSummaryCard(
@@ -47,7 +48,7 @@ fun BudgetSummaryCard(
 
             SummaryItem(
                 label = "Balance",
-                value = "₹ ${budget.balance}"
+                value = "₹ ${budget.balance.toDouble().roundToInt()}"
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -57,12 +58,12 @@ fun BudgetSummaryCard(
 
                 SummaryItem(
                     label = "Budget",
-                    value = "₹ ${budget.budgetAmount}"
+                    value = "₹ ${budget.budgetAmount.toDouble().roundToInt()}"
                 )
 
                 SummaryItem(
                     label = "Expenses",
-                    value = "₹ ${budget.totalExpense}"
+                    value = "₹ ${budget.totalExpense.toDouble().roundToInt()}"
                 )
             }
         }

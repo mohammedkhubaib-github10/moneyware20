@@ -2,7 +2,8 @@ package com.example.domain.usecase.budget
 
 import com.example.domain.entity.Budget
 import com.example.domain.repository.BudgetRepository
-import kotlinx.datetime.LocalDate
+import com.example.domain.utility.currentMonth
+import com.example.domain.utility.currentYear
 
 class GetOrCreateMonthlyBudgetUsecase(
     private val budgetRepository: BudgetRepository
@@ -10,11 +11,11 @@ class GetOrCreateMonthlyBudgetUsecase(
 
     suspend operator fun invoke(
         userId: String,
-        date: LocalDate,
         monthlyBudget: Double
     ): Budget {
 
-        val budgetName = monthYearName(date)
+        val budgetName =
+            "${currentMonth.name.lowercase().replaceFirstChar { it.uppercase() }} $currentYear"
 
         // Check if budget exists
         val (exists, budgetId) =
@@ -32,11 +33,4 @@ class GetOrCreateMonthlyBudgetUsecase(
             budgetRepository.createBudget(userId, budget)
         }
     }
-
-    private fun monthYearName(date: LocalDate): String {
-        val month = date.month.name.lowercase()
-            .replaceFirstChar { it.uppercase() }
-        return "$month ${date.year}"
-    }
-
 }
