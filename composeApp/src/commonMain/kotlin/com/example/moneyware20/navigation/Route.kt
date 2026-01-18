@@ -19,4 +19,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data class Expenses(val budget: BudgetUIModel) : Route
+
+    @Serializable
+    data object Settings: Route
 }

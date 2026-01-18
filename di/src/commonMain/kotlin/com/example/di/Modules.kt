@@ -31,6 +31,7 @@ import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.presentation.viewmodel.LoginViewModel
+import com.example.presentation.viewmodel.SettingsViewModel
 import com.example.presentation.viewmodel.SplashViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
@@ -43,7 +44,7 @@ val viewModelModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::SplashViewModel)
     viewModelOf(::ExpenseViewModel)
-
+    viewModelOf(::SettingsViewModel)
     singleOf(::AuthState)
 }
 

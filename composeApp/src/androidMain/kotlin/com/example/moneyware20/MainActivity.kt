@@ -1,5 +1,6 @@
 package com.example.moneyware20
 
+import SmsViewModel
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,7 +12,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.example.presentation.SmsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {

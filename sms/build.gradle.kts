@@ -49,8 +49,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(libs.kotlinx.datetime)
     implementation(libs.core)
-    implementation(libs.androidx.datastore.core)
-    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 

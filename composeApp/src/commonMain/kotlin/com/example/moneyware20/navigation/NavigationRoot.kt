@@ -13,6 +13,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.moneyware20.screen.LoginScreen
+import com.example.moneyware20.screen.SettingsScreen
 import com.example.moneyware20.screen.SplashScreen
 import com.example.moneyware20.screen.expensescreen.ExpensesScreen
 import com.example.moneyware20.screen.homescreen.HomeScreen
@@ -20,6 +21,7 @@ import com.example.presentation.AuthState
 import com.example.presentation.viewmodel.BudgetViewModel
 import com.example.presentation.viewmodel.ExpenseViewModel
 import com.example.presentation.viewmodel.LoginViewModel
+import com.example.presentation.viewmodel.SettingsViewModel
 import com.example.presentation.viewmodel.SplashViewModel
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -41,6 +43,7 @@ fun NavigationRoot(
                 subclass(Route.Login::class, Route.Login.serializer())
                 subclass(Route.Home::class, Route.Home.serializer())
                 subclass(Route.Expenses::class, Route.Expenses.serializer())
+                subclass(Route.Settings::class, Route.Settings.serializer())
             }
         }
     }, Route.Splash)
@@ -105,6 +108,9 @@ fun NavigationRoot(
                             user = key.user,
                             onBudgetClick = { budgetUIModel ->
                                 backStack.add(Route.Expenses(budgetUIModel))
+                            },
+                            onSettingsClick = {
+                                backStack.add(Route.Settings)
                             }
                         )
                     }
@@ -118,9 +124,21 @@ fun NavigationRoot(
                         LaunchedEffect(list) {
                             expenseViewModel.refreshExpense(key.budget.budgetId)
                         }
-                        ExpensesScreen(key.budget, expenseViewModel, budgetViewModel) {
-                            backStack.removeLastOrNull()
-                        }
+                        ExpensesScreen(
+                            budgetUIModel = key.budget,
+                            expenseViewModel = expenseViewModel,
+                            budgetViewModel = budgetViewModel,
+                            onNavigation = { backStack.removeLastOrNull() }
+                        )
+                    }
+                }
+
+                is Route.Settings -> {
+                    NavEntry(key) {
+                        val settingsViewModel: SettingsViewModel = koinViewModel()
+                        SettingsScreen(
+                            viewModel = settingsViewModel,
+                            onNavigation = { backStack.removeLast() })
                     }
                 }
 

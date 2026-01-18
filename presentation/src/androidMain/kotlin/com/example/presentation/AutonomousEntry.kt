@@ -12,13 +12,13 @@ class AutonomousEntry(
     private val getOrCreateMonthlyBudgetUsecase: GetOrCreateMonthlyBudgetUsecase
 ) {
 
-    suspend fun importCurrentMonthBankSms(userId: String) {
+    suspend fun importCurrentMonthBankSms(userId: String, budgetLimit: Int) {
         val smsList = smsInbox.getCurrentMonthBankDebitSms()
 
         val parsedList = smsList.map {
             smsParser.parse(it.body, it.timestamp)
         }
-        val budget = getOrCreateMonthlyBudgetUsecase(userId, 10000.0)
+        val budget = getOrCreateMonthlyBudgetUsecase(userId, budgetLimit.toDouble())
         parsedList.forEach {
             importer.import(it, userId, budget.budgetId)
         }

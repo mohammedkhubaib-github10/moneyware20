@@ -22,8 +22,16 @@ class GetOrCreateMonthlyBudgetUsecase(
             budgetRepository.isBudgetNameExists(userId, budgetName)
 
         return if (exists && budgetId != null) {
-            budgetRepository.getBudgetById(userId, budgetId)
-                ?: error("Budget not found after existence check")
+            val updatedBudget = Budget(
+                budgetId = budgetId,
+                budgetName = budgetName,
+                budgetAmount = monthlyBudget
+            )
+            budgetRepository.updateBudget(
+                userId,
+                updatedBudget
+            )
+            budgetRepository.getBudgetById(userId, budgetId) ?: error("Budget not found")
         } else {
             val budget = Budget(
                 budgetId = "",

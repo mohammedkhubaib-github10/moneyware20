@@ -59,6 +59,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime) // Use 0.6.0 or higher
                 // Add KMP dependencies here

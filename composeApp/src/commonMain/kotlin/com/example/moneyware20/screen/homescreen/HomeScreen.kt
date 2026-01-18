@@ -34,7 +34,8 @@ import primaryColor
 fun HomeScreen(
     user: UserUIModel,
     viewModel: BudgetViewModel,
-    onBudgetClick: (BudgetUIModel) -> Unit
+    onBudgetClick: (BudgetUIModel) -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val uiState by viewModel.budgetUIState.collectAsState()
     val budgetList by viewModel.budgetList.collectAsState()
@@ -46,8 +47,13 @@ fun HomeScreen(
         drawerState = drawerState,
         userName = if (user.userName != null) user.userName!! else "User",
         profileImage = painterResource(Res.drawable.logo),
-        onSettingsClick = {},
-        onSignOutClick = { viewModel.signOut() }
+        onSettingsClick = {
+            onSettingsClick()
+            scope.launch {
+                drawerState.close()
+            }
+        },
+        onSignOutClick = viewModel::signOut
     ) {
         Scaffold(
             topBar = {

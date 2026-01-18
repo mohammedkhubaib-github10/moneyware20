@@ -3,6 +3,7 @@ package com.example.moneyware20
 import android.app.Application
 import com.example.di.androidAuthModule
 import com.example.di.androidDataStoreModule
+import com.example.di.androidSettingsModule
 import com.example.di.androidViewModelModule
 import com.example.di.initKoin
 import com.example.di.notificationModule
@@ -17,7 +18,7 @@ class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 androidAuthModule, notificationModule, smsModule, androidDataStoreModule,
-                androidViewModelModule
+                androidViewModelModule, androidSettingsModule
             )
             // this@MyApplication  inside lambda is equivalent to MyApplication.this in java
         }

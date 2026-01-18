@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.data.notification
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
