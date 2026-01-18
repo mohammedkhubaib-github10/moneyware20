@@ -7,6 +7,7 @@ import com.example.domain.notification.BudgetNotificationStore
 import com.example.domain.notification.BudgetThresholdNotifier
 import com.example.domain.repository.BudgetRepository
 import com.example.domain.repository.ExpenseRepository
+import kotlin.math.roundToInt
 
 class AndroidBudgetThresholdNotifier(
     private val budgetRepository: BudgetRepository,
@@ -30,6 +31,8 @@ class AndroidBudgetThresholdNotifier(
         val totalSpent =
             expenses.sumOf { it.expenseAmount }
 
+        val balance = budget.budgetAmount - totalSpent
+
         val percentage =
             ((totalSpent * 100) / budget.budgetAmount).toInt()
 
@@ -39,13 +42,17 @@ class AndroidBudgetThresholdNotifier(
 
         when {
             percentage >= 90 && lastNotified < 90 -> {
-                notificationHelper.showNotification(budget.budgetName, 90)
+                notificationHelper.showNotification(budget.budgetName, 90, balance.roundToInt())
                 notificationStore.setLastNotifiedThreshold(budgetId, 90)
             }
 
             percentage >= 50 && lastNotified < 50 -> {
-                notificationHelper.showNotification(budget.budgetName, 50)
+                notificationHelper.showNotification(budget.budgetName, 50, balance.roundToInt())
                 notificationStore.setLastNotifiedThreshold(budgetId, 50)
+            }
+
+            percentage >= 100 -> {
+                notificationHelper.showNotification(budget.budgetName, 100, balance.roundToInt())
             }
         }
     }

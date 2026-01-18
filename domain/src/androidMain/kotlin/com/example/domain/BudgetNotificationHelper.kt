@@ -40,16 +40,19 @@ class BudgetNotificationHelper(
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showNotification(
         budgetName: String,
-        percent: Int
+        percent: Int,
+        balance: Int
     ) {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_notification_overlay)
             .setContentTitle("Budget Alert")
             .setContentText(
                 if (percent == 50)
-                    "You've used over 50% of your $budgetName budget"
+                    "You've used over 50% of your $budgetName budget and You have balance around ${balance}"
+                else if (percent == 90)
+                    "You've used over 90% of your $budgetName budget and You have balance around ${balance}"
                 else
-                    "You've used over 90% of your $budgetName budget"
+                    "You've used over 100% of your $budgetName budget and You are Over Budget by ${-balance}"
             )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
