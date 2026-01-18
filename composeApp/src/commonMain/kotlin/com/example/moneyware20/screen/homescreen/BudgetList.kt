@@ -123,15 +123,17 @@ fun BudgetCard(
                     fontSize = 18.sp,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                OverflowMenu(
-                    onEdit = {
-                        viewModel.setDialog(true)
-                        viewModel.setBudgetDialogMode(DialogMode.EDIT)
-                        viewModel.onBudgetIdChange(budgetId = budget.budgetId)
-                        viewModel.onBudgetNameChange(budget.budgetName)
-                        viewModel.onBudgetAmountChange(budget.budgetAmount)
-                    },
-                    onDelete = { viewModel.deleteBudget(budget.budgetId) })
+                if (!isAutoMonthlyBudget(budget.budgetName)) {
+                    OverflowMenu(
+                        onEdit = {
+                            viewModel.setDialog(true)
+                            viewModel.setBudgetDialogMode(DialogMode.EDIT)
+                            viewModel.onBudgetIdChange(budgetId = budget.budgetId)
+                            viewModel.onBudgetNameChange(budget.budgetName)
+                            viewModel.onBudgetAmountChange(budget.budgetAmount)
+                        },
+                        onDelete = { viewModel.deleteBudget(budget.budgetId) })
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -166,4 +168,11 @@ fun BudgetCard(
 
         }
     }
+}
+
+private fun isAutoMonthlyBudget(name: String): Boolean {
+    val regex = Regex(
+        pattern = "^(January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{4}$",
+    )
+    return regex.matches(name.trim())
 }

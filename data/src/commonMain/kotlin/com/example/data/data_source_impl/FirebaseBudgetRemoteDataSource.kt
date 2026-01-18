@@ -40,18 +40,31 @@ class FirebaseBudgetRemoteDataSource : BudgetRemoteDataSource {
         return list
     }
 
-    override suspend fun isBudgetNameExists(userId: String, name: String): Pair<Boolean, String?> {
+    override suspend fun isBudgetNameExists(
+        userId: String,
+        name: String
+    ): Pair<Boolean, String?> {
+
         val snapshot = db
             .collection("users")
             .document(userId)
             .collection("budgets")
-            .where { "name" equalTo name }
             .get()
-        return if (snapshot.documents.isNotEmpty()) Pair(
-            true,
-            snapshot.documents.first().id
-        ) else Pair(false, null)
+
+        val normalizedInput = name.trim().lowercase()
+
+        val match = snapshot.documents.firstOrNull { doc ->
+            val storedName = doc.get("name") as? String
+            storedName?.trim()?.lowercase() == normalizedInput
+        }
+
+        return if (match != null) {
+            true to match.id
+        } else {
+            false to null
+        }
     }
+
 
     override suspend fun updateBudget(userId: String, id: String, dto: BudgetDto) {
         db
