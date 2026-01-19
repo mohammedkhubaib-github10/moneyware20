@@ -79,7 +79,5 @@ Moneyware follows **Clean Architecture and MVVM principles** with a clear separa
 
 ##  Screenshots
 
-| Home | Add Expense | Budget Overview |
-|------|-------------|----------------|
 | ![](screenshots/splash.jpeg) | ![](screenshots/login.jpeg) | ![](screenshots/home.jpeg) |  ![](screenshots/expense.jpeg) | }
 | ![](screenshots/settings.jpeg) | ![](screenshots/modes.jpeg) | ![](screenshots/voice.jpeg) | }
