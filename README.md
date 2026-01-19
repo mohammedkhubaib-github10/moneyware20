@@ -1,35 +1,84 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Moneyware - Smart Expense Tracking App
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+Moneyware is a **production-ready Android/KMP smart expense tracking application**
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
-
-### Build and Run Android Application
-
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
-
-### Build and Run iOS Application
-
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+The app supports **manual and automatic expense tracking**, monthly budget management, and secure cloud synchronization using Firebase.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+##  Key Features
+
+### Secure Expense Management
+- Create, update, and delete expenses with **strict user-level access control**
+- Backend-enforced ownership using Firebase Authentication and Firestore Rules
+- No sensitive logic trusted to the client
+
+### Automatic Expense Import (SMS-based)
+- Reads bank debit SMS messages using Android’s ContentResolver
+- Parses amount, merchant, and timestamp using regex-based parsing
+- Implements **server-side deduplication** to prevent duplicate expense entries
+- Deduplication is enforced atomically using **Firestore transactions**
+
+### Notification
+- Users can configure a budget threshold that determines when notifications should be triggered
+- Notifications are sent when total expenses exceed the configured threshold
+
+### Budget Tracking
+- Monthly budgets with real-time expense aggregation
+- Automatic creation and update of current-month budgets
+- Accurate balance and utilization tracking
+
+### Voice-Based Expense Entry (Experimental)
+- Voice commands powered by **Google Gemini API**
+- Orchestrated using **Koog**
+- Allows users to add expenses using natural language
+- Feature currently implemented in a separate module and planned for migration
+
+---
+
+##  Architecture & Design
+
+Moneyware follows **Clean Architecture and MVVM principles** with a clear separation of concerns:
+
+- **Presentation Layer**
+  - Jetpack Compose Multiplatform (Android/IOS)
+  - ViewModels with StateFlow
+
+- **Domain Layer**
+  - Business rules and use cases
+  - Platform-agnostic Kotlin code (KMP)
+
+- **Data Layer**
+  - Firebase Firestore (Remote Data Source)
+  - Android DataStore (Settings)
+  - Repository pattern
+
+##  Tech Stack
+
+**Frontend**
+- Kotlin
+- Kotlin Multiplatform (KMP)
+- Jetpack Compose Multiplatform
+
+**Backend / Cloud**
+- Firebase Authentication
+- Cloud Firestore
+- Firestore Security Rules
+- Firestore Transactions
+
+**AI / Voice**
+- Google Gemini API
+- Koog (Agent Orchestration)
+
+**Other**
+- Android DataStore
+- Coroutines & Flow
+- Gradle (Kotlin DSL)
+
+---
+
+##  Screenshots
+
+| Home | Add Expense | Budget Overview |
+|------|-------------|----------------|
+| ![](screenshots/home.png) | ![](screenshots/add_expense.png) | ![](screenshots/budget.png) |
