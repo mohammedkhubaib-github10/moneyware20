@@ -27,7 +27,7 @@ class SmsExpenseImporter(
             bucketTimestamp(parsed.timestamp)
         )
         val hash = sha256(key)
-        Log.d("trans", parsed.toString())
+        Log.d("my transactions", parsed.toString())
         val expense =
             parsed.toExpense(
                 userId = userId,
